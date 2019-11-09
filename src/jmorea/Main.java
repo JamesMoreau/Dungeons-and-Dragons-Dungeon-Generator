@@ -1,7 +1,7 @@
 package jmorea;
 
 //TODO: getDoors from a chamber and check if that ArrayList.contains(the door) for any door you are trying to get a target for.
-/**
+ /**
  * Dungeon generator class manages algorithm.
  */
 public final class Main {
@@ -88,7 +88,7 @@ public final class Main {
 
         /* Making Description */
         for (int i = 0; i < 5; i++) {
-            finalDescription.append("\n" + (i + 1) + ":");
+            finalDescription.append("\n").append(i + 1).append(":");
             finalDescription.append(myLevel.getSpaces().get(i).getDescription());
         }
         System.out.println(finalDescription.toString());

@@ -267,6 +267,10 @@ public class Door {
         return this.myDescription.toString();
     }
 
+    /**
+     * Returns the exit associated with the door.
+     * @return the exit
+     */
     public Exit getExit() {
         return this.myExit;
     }

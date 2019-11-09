@@ -1,4 +1,4 @@
-<project name="A3" default="compile" basedir=".">
+<project name="A4" default="compile" basedir=".">
   <description>
     simple example build file
   </description>

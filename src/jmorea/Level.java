@@ -43,9 +43,9 @@ public class Level {
      * Creates a blank level.
      */
     public Level() {
-        this.mySpaces = new ArrayList<Space>();
-        this.myMap = new HashMap<Door, ArrayList<Chamber>>();
-        this.spaceAvailableDoorCounts = new ArrayList<Integer>();
+        this.mySpaces = new ArrayList<>();
+        this.myMap = new HashMap<>();
+        this.spaceAvailableDoorCounts = new ArrayList<>();
         setChamberCount(0);
         setPassageCount(0);
     }
@@ -81,7 +81,7 @@ public class Level {
      * @param s space to be searched for a door.
      * @return the found door
      */
-    public Door findGoodDoor(Space s) {
+    Door findGoodDoor(Space s) {
         Chamber c;
         Passage p;
 
@@ -107,7 +107,7 @@ public class Level {
      * Returns boolean state of level dead end state.
      * @return deadEndFlag
      */
-    public boolean isDeadEnd() {
+    boolean isDeadEnd() {
         return this.deadEndFlag;
     }
 
@@ -115,7 +115,7 @@ public class Level {
      * Sets level's dead end state.
      * @param x boolean used to set level's dead end state
      */
-    public void setDeadEnd(Boolean x) {
+    void setDeadEnd(Boolean x) {
         this.deadEndFlag = x;
     }
 
@@ -123,19 +123,15 @@ public class Level {
      * Returns boolean of level's done generation state.
      * @return whether the dungeon is done
      */
-    public boolean isDone() {
-        if (this.chamberCount > 5) {
-            return true;
-        } else {
-            return false;
-        }
+    boolean isDone() {
+        return (this.chamberCount > 5);
     }
 
     /**
      * Sets chamber count in level.
      * @param x boolean used to set level's chamber count
      */
-    public void setChamberCount(int x) {
+    void setChamberCount(int x) {
         this.chamberCount = x;
     }
 
@@ -143,7 +139,7 @@ public class Level {
      * returns chamber count in level.
      * @return chamberCount
      */
-    public int getChamberCount() {
+    int getChamberCount() {
         return this.chamberCount;
     }
 
@@ -151,7 +147,7 @@ public class Level {
      * Sets passage count in level.
      * @param x boolean used to set level's passage count.
      */
-    public void setPassageCount(int x) {
+    void setPassageCount(int x) {
         this.passageCount = x;
     }
 
@@ -159,7 +155,7 @@ public class Level {
      * Returns passage count in level.
      * @return passageCount
      */
-    public int getPassageCount() {
+    int getPassageCount() {
         return this.passageCount;
     }
 
@@ -167,7 +163,7 @@ public class Level {
      * Returns array list of spaces in level.
      * @return mySpaces
      */
-    public ArrayList<Space> getSpaces() {
+    ArrayList<Space> getSpaces() {
         return this.mySpaces;
     }
 
@@ -175,7 +171,7 @@ public class Level {
      * Adds a space to the space list.
      * @param theSpace space to be added
      */
-    public void addSpace(Space theSpace) {
+    void addSpace(Space theSpace) {
         this.mySpaces.add(theSpace);
     }
 
@@ -191,7 +187,7 @@ public class Level {
     /**
      * Clears the level.
      */
-    public void clearLevel() {
+    void clearLevel() {
         this.mySpaces.clear();
         setPassageCount(0);
         setChamberCount(0);
@@ -201,7 +197,7 @@ public class Level {
      * Adds a chamber to the arralist of spaces and records its door count.
      * @param toAdd the Chamber to be added to the spacelist
      */
-    public void addChamber(Chamber toAdd) {
+    void addChamber(Chamber toAdd) {
         mySpaces.add(toAdd);
         this.spaceAvailableDoorCounts.add(toAdd.getDoors().size());
         this.chamberCount++;
@@ -212,7 +208,7 @@ public class Level {
      * @param toAdd the Passage to be added to the spacelist
      */
     // TODO write test for this. add in report.
-    public void addPassage(Passage toAdd) {
+    void addPassage(Passage toAdd) {
         mySpaces.add(toAdd);
         this.spaceAvailableDoorCounts.add(toAdd.getDoors().size());
         this.passageCount++;
@@ -224,7 +220,7 @@ public class Level {
      * @return the available door count for that chamber
      */
     // TODO write test for this. add in report.
-    public int getAvailableDoorCount(int i) {
+    int getAvailableDoorCount(int i) {
         if (i >= this.spaceAvailableDoorCounts.size()) {
             System.out.println("Desired Chamber index does not exist");
             return -1;
@@ -238,7 +234,7 @@ public class Level {
      * Reduces the number of available doors in a given chamber.
      * @param i the index of the space.
      */
-    public void reduceAvailableDoorCount(int i) {
+    void reduceAvailableDoorCount(int i) {
         if (i >= this.spaceAvailableDoorCounts.size()) {
             System.out.println("Desired Chamber index does not exist");
         } else {
@@ -252,13 +248,13 @@ public class Level {
      * @param d the door that selects a target.
      * @param c the doors target chamber
      */
-    public void selectChamberTarget(Door d, Chamber c) {
+    void selectChamberTarget(Door d, Chamber c) {
 
         ArrayList<Chamber> cList = this.myMap.get(d);
 
         //If list array list does not exist, create it
         if (cList == null) {
-            cList = new ArrayList<Chamber>();
+            cList = new ArrayList<>();
             cList.add(c);
             this.myMap.put(d, cList);
         } else { //array list already exists
@@ -270,7 +266,7 @@ public class Level {
      * Prints the current level.
      * TODO write test and add to report
      */
-    public void printLevel() {
+    void printLevel() {
         System.out.println("\nmyLevel door map:" + this.myMap.toString());
     }
 
@@ -288,7 +284,7 @@ public class Level {
 
             for (int j = 0; j < this.mySpaces.get(i).getDoors().size(); j++) { //looping over every door in that chamber
 
-                temp = myMap.get((Door) this.mySpaces.get(i).getDoors().get(j)); //temp is the chamber the door is targeting
+                temp = myMap.get(this.mySpaces.get(i).getDoors().get(j)); //temp is the chamber the door is targeting
 
                 for (int k = 0; k < temp.get(0).getDoors().size(); k++) {
                     if ((myMap.get(temp.get(0).getDoors().get(k))).get(0) == c) { //doors are pointing at each other's chamber's UwU
