@@ -8,6 +8,6 @@ James Moreau<br/>
 1065510<br/>
 jmorea03@uoguelph.ca<br/>
 
-RUN PROGRAM WITH: "java -cp "build:lib/dnd-20190914.jar" jmorea.Main"
+RUN PROGRAM WITH: "java -cp "build:lib/A3-dnd.jar" jmorea.Main"
 
 RUN JUNIT WITH: "ant junit"

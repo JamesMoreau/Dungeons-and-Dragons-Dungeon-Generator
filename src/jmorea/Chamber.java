@@ -129,7 +129,7 @@ public class Chamber extends Space {
      */
     @Override
     public String getDescription() {
-        this.makeChamberDecription();
+        this.makeChamberDescription();
         return myDescription.toString();
     }
 
@@ -147,7 +147,7 @@ public class Chamber extends Space {
     /**
      * Creates a description for the entire chameber.
      */
-    private void makeChamberDecription() {
+    private void makeChamberDescription() {
         this.myDescription = new StringBuilder();
 
         this.myDescription.append("\n\n____________Chamber____________\n\n");
