@@ -1,0 +1,61 @@
+<project name="A3" default="compile" basedir=".">
+  <description>
+    simple example build file
+  </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src/"/>
+  <property name="build" location="build"/>
+  <property name="doc" location="doc"/>
+  <property name="lib" location="lib"/>
+  <property name="test" location="test"/>
+
+
+   <path id="lib.path">
+    <fileset dir="${lib}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+  
+  <target name="init">
+    <tstamp/><!-- Create the time stamp -->
+    <mkdir dir="${build}"/>   <!-- Create the build directory -->
+    <mkdir dir="${doc}"/>   <!-- Create the doc directory -->
+
+  </target>
+
+  <target name="compile" depends="init" 
+        description="compile the source">
+    <javac classpath="build" classpathref="lib.path" includeantruntime="false" srcdir="${src}" destdir="${build}"/>
+    <echo message="RUN WITH:java -cp &quot;build:lib dnd-A3.jar&quot; jmorea.Main" />
+  </target>
+
+    <target name="junitcompile" depends="compile" 
+        description="compile the unit tests">
+    <javac classpath="build" classpathref="lib.path" includeantruntime="false" srcdir="${test}" destdir="${build}"/>
+
+  </target>
+
+  <target name="clean"
+        description="clean up">
+    <delete dir="${build}"/>
+  </target>
+
+<target name="junit" depends="junitcompile" description="Run test">
+    <java classpath="build" classpathref="lib.path" classname="jmorea.TestRunner"/>
+</target>
+
+<!-- CheckStyle Configuration and task. Does not run automatically -->
+<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+         classpath="checkstyle/checkstyle-8.24-all.jar"/>
+<target name="checkstyle"
+        description="Generates a report of code convention violations.">
+
+  <checkstyle config="checkstyle/A2CheckStyle.xml"
+              failureProperty="checkstyle.failure"
+              failOnViolation="false">
+    <fileset dir="src" includes="**/*.java"/>
+  </checkstyle>
+
+</target>
+
+</project>
