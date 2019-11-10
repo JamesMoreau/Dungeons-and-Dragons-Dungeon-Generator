@@ -3,7 +3,7 @@ package jmorea;
 import java.util.ArrayList;
 
 /**
- * Space class represents either a Chmaber or a Passage.
+ * Space class represents either a Chamber or a Passage.
  */
 public abstract class Space {
 

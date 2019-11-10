@@ -1,6 +1,3 @@
-/**
- * My Dungeon generation package
- */
 package jmorea;
 
 import dnd.exceptions.NotProtectedException;
@@ -92,7 +89,7 @@ public class Chamber extends Space {
      * Adds a monster to the arraylist of monster.
      * @param theMonster the monster to be added
      */
-    public void addMonster(Monster theMonster) {
+    void addMonster(Monster theMonster) {
         theMonster.setType(new Percentile().roll());
         this.myMonsters.add(theMonster);
     }
@@ -101,7 +98,7 @@ public class Chamber extends Space {
      * returns the arraylist of monsters associated with the chamber.
      * @return the arraylist of monsters
      */
-    public ArrayList<Monster> getMonsters() {
+    ArrayList<Monster> getMonsters() {
         return this.myMonsters;
     }
 
@@ -110,7 +107,7 @@ public class Chamber extends Space {
      * Adds a treasure to the arraylist of treasure.
      * @param theTreasure the treasure to be added
      */
-    public void addTreasure(Treasure theTreasure) {
+    void addTreasure(Treasure theTreasure) {
         theTreasure.setContainer(new D20().roll());
         theTreasure.chooseTreasure(new Percentile().roll());
         this.myTreasure.add(theTreasure);
@@ -120,7 +117,7 @@ public class Chamber extends Space {
      * returns the arraylist of treasure associated with the chamber.
      * @return the arraylistof treasure
      */
-    public ArrayList<Treasure> getTreasureList() {
+    ArrayList<Treasure> getTreasureList() {
         return this.myTreasure;
     }
 
@@ -162,9 +159,7 @@ public class Chamber extends Space {
      *  Creates a description for the shape.
      */
     private void makeChamberShapeDescription() {
-        int area = 0;
-        int length = 0;
-        int width = 0;
+        int area,length, width;
         this.myDescription.append("\nShape:\n");
         this.myDescription.append("\tThe chamber is ").append(this.myShape.getShape()).append(".\n");
         try {
@@ -184,8 +179,8 @@ public class Chamber extends Space {
     private void makeChamberMonstersDescription() {
         if (myMonsters.size() > 0) {
             this.myDescription.append("\nMonsters:\n");
-            for (int i = 0; i < myMonsters.size(); i++) {
-                this.myDescription.append("\t" + myMonsters.get(i).getDescription());
+            for (Monster myMonster : myMonsters) {
+                this.myDescription.append("\t").append(myMonster.getDescription());
             }
             this.myDescription.append(".\n");
         } else {
@@ -199,10 +194,10 @@ public class Chamber extends Space {
     private void makeChamberTreasureDescription() {
         if (myTreasure.size() > 0) {
             this.myDescription.append("\nTreasure:\n");
-            for (int j = 0; j < myTreasure.size(); j++) {
-                this.myDescription.append("\t" + this.myTreasure.get(j).getDescription());
+            for (Treasure treasure : myTreasure) {
+                this.myDescription.append("\t").append(treasure.getDescription());
                 try {
-                    this.myDescription.append(" is protected by " + this.myTreasure.get(j).getProtection());
+                    this.myDescription.append(" is protected by ").append(treasure.getProtection());
                 } catch (NotProtectedException e) {
                     this.myDescription.append(" is left unprotected");
                 }
@@ -220,12 +215,12 @@ public class Chamber extends Space {
         if (myShape.getNumExits() > 0) {
             this.myDescription.append("\nExits:\n");
             for (int k = 0; k < this.myDoors.size(); k++) {
-                this.myDescription.append("Door #" + k + ":\n");
-                this.myDescription.append("\tDoor is " + myDoors.get(k).getDescription() + ".\n");
-                this.myDescription.append("\tDoor is on " + myDoors.get(k).getExit().getLocation() + " " + myDoors.get(k).getExit().getDirection() + ".\n"); //Be careful since this executes outside the door class
+                this.myDescription.append("Door #").append(k).append(":\n");
+                this.myDescription.append("\tDoor is ").append(myDoors.get(k).getDescription()).append(".\n");
+                this.myDescription.append("\tDoor is on ").append(myDoors.get(k).getExit().getLocation()).append(" ").append(myDoors.get(k).getExit().getDirection()).append(".\n"); //Be careful since this executes outside the door class
 
                 if (myDoors.get(k).isTrapped()) {
-                    this.myDescription.append("\tDoor Trap:" + this.myDoors.get(k).getTrapDescription() + ".\n");
+                    this.myDescription.append("\tDoor Trap:").append(this.myDoors.get(k).getTrapDescription()).append(".\n");
                 }
             }
         } else {

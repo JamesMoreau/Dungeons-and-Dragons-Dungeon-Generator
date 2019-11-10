@@ -35,11 +35,11 @@ public class Passage extends Space {
      * Creates a passage with default characteristics.
      */
     public Passage() {
-        this.thePassage = new ArrayList<PassageSection>();
+        this.thePassage = new ArrayList<>();
         this.myDescription = new StringBuilder();
-        this.myDoors = new ArrayList<Door>();
+        this.myDoors = new ArrayList<>();
         this.doneFlag = false;
-        PassageSection temp = null;
+        PassageSection temp;
 
         while (!this.isDone()) {
             temp = new PassageSection();
@@ -57,7 +57,7 @@ public class Passage extends Space {
      * Returns the number of passage sections in this passage.
      * @return the passage size
      */
-    public int getSectionCount() {
+    int getSectionCount() {
         return this.thePassage.size();
     }
 
@@ -76,7 +76,7 @@ public class Passage extends Space {
      * @param i the index of the passage section
      * @return the passage's door
      */
-    public Door getDoor(int i) {
+    Door getDoor(int i) {
         //returns the door in section 'i'. If there is no door, returns null
         if (i >= this.getDoors().size()) {
             System.out.println("Out of range");
@@ -90,7 +90,7 @@ public class Passage extends Space {
     *@param theMonster the monster to be added
     * @param i the index of the passage section
      */
-    public void addMonster(Monster theMonster, int i) {
+    void addMonster(Monster theMonster, int i) {
         // adds a monster to section 'i' of the passage
         thePassage.get(i).setMonster(theMonster);
     }
@@ -100,7 +100,7 @@ public class Passage extends Space {
      * @param i the index of the passage section
      * @return the desired monster
      */
-    public Monster getMonster(int i) {
+    Monster getMonster(int i) {
         //returns Monster door in section 'i'. If there is no Monster, returns null
         return thePassage.get(i).getMonster();
     }
@@ -110,7 +110,7 @@ public class Passage extends Space {
      * If there is a door in this section, associates it with the passage.
      * @param toAdd the passage section to be added
      */
-    public void addPassageSection(PassageSection toAdd) {
+    void addPassageSection(PassageSection toAdd) {
         //adds the passage section to the passageway
         if (toAdd.getDoor() != null) {
             toAdd.getDoor().setOneSpace(this);
@@ -124,7 +124,7 @@ public class Passage extends Space {
      * Sets the done flag specified value (usually set to true).
      * @param flag the flag value to be set
      */
-    public void setDone(boolean flag) {
+    void setDone(boolean flag) {
         this.doneFlag = flag;
     }
 
@@ -132,7 +132,7 @@ public class Passage extends Space {
      * Returns whether or not the passage is done generating.
      * @return the doneFlag
      */
-    public boolean isDone() {
+    boolean isDone() {
         return this.doneFlag;
     }
 
@@ -162,15 +162,15 @@ public class Passage extends Space {
     private void makeDescription() {
         this.myDescription = new StringBuilder();
         this.myDescription.append("\n____________Passage____________\n\n");
-        for (int i = 0; i < thePassage.size(); i++) {
-            this.myDescription.append(thePassage.get(i).getDescription() + ".\n");
+        for (PassageSection passageSection : thePassage) {
+            this.myDescription.append(passageSection.getDescription()).append(".\n");
 
-            if (thePassage.get(i).getDoor() != null) {
-                this.myDescription.append("Door is " + thePassage.get(i).getDoor().getDescription() + ".\n");
+            if (passageSection.getDoor() != null) {
+                this.myDescription.append("Door is ").append(passageSection.getDoor().getDescription()).append(".\n");
             }
 
-            if (thePassage.get(i).getMonster() != null) {
-                this.myDescription.append(thePassage.get(i).getMonster().getDescription() + ".\n");
+            if (passageSection.getMonster() != null) {
+                this.myDescription.append(passageSection.getMonster().getDescription()).append(".\n");
             }
 
             this.myDescription.append("\n");
@@ -180,7 +180,7 @@ public class Passage extends Space {
     /**
      * Makes Passage boring, i.e., 2 plain passage sections, 2 doors.
      */
-    public void makeBoring() {
+    void makeBoring() {
         PassageSection temp;
 
         /* Clear the passage */

@@ -37,24 +37,6 @@ public class PassageSection {
     }
 
     /**
-     * Creates a passage section with a specified description.
-     * @param description the description that is set
-     */
-    @Deprecated
-    private PassageSection(String description) { /* DO NOT USE */
-        //sets up a specific passage based on the values sent in from
-        //modified table 1
-        if (description.contains("Monster")) {
-            this.myMonster = new Monster();
-        }
-        if (description.contains("Door")) {
-            this.myDoor = new Door();
-        }
-        this.myDescription = new StringBuilder();
-        this.myDescription.append(description);
-    }
-
-    /**
      * Chooses a description for this section based on the roll table supplied.
      */
     private void chooseDescription() { //Put changes to Door Monster in these descriptions.
@@ -106,7 +88,7 @@ public class PassageSection {
      * Returns the monster that is in the passage section, if there is one.
      * @return the monster in this passage section
      */
-    public Monster getMonster() {
+    Monster getMonster() {
         return this.myMonster;
     }
 
@@ -114,7 +96,7 @@ public class PassageSection {
      * Sets the monster in this section to the supplied monster.
      * @param theMonster the monster to be added
      */
-    public void setMonster(Monster theMonster) {
+    void setMonster(Monster theMonster) {
         this.myMonster = theMonster;
     }
 

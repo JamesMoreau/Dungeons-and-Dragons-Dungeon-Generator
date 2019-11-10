@@ -106,9 +106,8 @@ public class Door {
      *@param flag boolean to set door trap state
      *@param roll roll used to make trap
      */
-    public void setTrapped(boolean flag, int... roll) {
+    void setTrapped(boolean flag, int... roll) {
         // true == trapped.  Trap must be rolled if no integer is given
-        D20 myD20 = new D20();
         if (roll.length == 0) {
             this.doorTrap.chooseTrap(new D20().roll());
         } else {
@@ -121,7 +120,7 @@ public class Door {
      * Returns the traps description.
      * @return doorTrap description
      */
-    public String getTrapDescription() {
+    String getTrapDescription() {
         return doorTrap.getDescription();
     }
 
@@ -129,7 +128,7 @@ public class Door {
      * Returns door's trap state.
      *@return the trapFLag
      */
-    public boolean isTrapped() {
+    boolean isTrapped() {
         return this.trapFlag;
     }
 
@@ -137,7 +136,7 @@ public class Door {
      * Sets door's open state.
      *@param flag boolean used to set door's open state
      */
-    public void setOpen(boolean flag) {
+    void setOpen(boolean flag) {
         //true == open
         if (!this.isArchway()) { //Archway constraint
 
@@ -155,7 +154,7 @@ public class Door {
      * Returns door's open state.
      * @return openFlag
      */
-    public boolean isOpen() {
+    boolean isOpen() {
         return this.openFlag;
     }
 
@@ -163,7 +162,7 @@ public class Door {
      * Sets the door's archway state.
      *@param flag boolean to set door archway state
      */
-    public void setArchway(boolean flag) {
+    void setArchway(boolean flag) {
         //true == is archway
         this.archwayFlag = flag;
 
@@ -178,7 +177,7 @@ public class Door {
      * Returns the door's archway state.
      *@return the archwayFlag
      */
-    public boolean isArchway() {
+    boolean isArchway() {
         return this.archwayFlag;
     }
 
@@ -186,7 +185,7 @@ public class Door {
      * Sets the door's locked state.
      *@param flag boolean to set door's lock state
      */
-    public void setLock(boolean flag) {
+    void setLock(boolean flag) {
         this.lockFlag = flag;
     }
 
@@ -194,7 +193,7 @@ public class Door {
      * Return's door's lock state.
      *@return lockFlag
      */
-    public boolean isLock() {
+    boolean isLock() {
         return this.lockFlag;
     }
 
@@ -202,7 +201,7 @@ public class Door {
      * Returns door's space arraylist.
      *@return the space arraylist
      */
-    public ArrayList<Space> getSpaces() {
+    ArrayList<Space> getSpaces() {
         //returns the two spaces that are connected by the door
         return this.spaceList;
     }
@@ -211,7 +210,7 @@ public class Door {
      * Sets the door's first space.
      *@param s space to be connected.
      */
-    public void setOneSpace(Space s) {
+    void setOneSpace(Space s) {
         this.spaceList.add(s);
         s.setDoor(this);
     }
@@ -220,7 +219,7 @@ public class Door {
      * Sets the door's second space.
      *@param s space to be connected.
      */
-    public void setTwoSpace(Space s) {
+    void setTwoSpace(Space s) {
         if (this.spaceList.size() == 0) {
             System.out.println("Could not add second space to door since first space DNE");
         } else {
@@ -243,7 +242,7 @@ public class Door {
      *@param spaceOne space to be connected.
      *@param spaceTwo space to be connected.
      */
-    public void setSpaces(Space spaceOne, Space spaceTwo) {
+    void setSpaces(Space spaceOne, Space spaceTwo) {
         //identifies the two spaces with the door
         //this method should also call the addDoor method from Space
         //Should set second space to null if it not known
@@ -271,7 +270,7 @@ public class Door {
      * Returns the exit associated with the door.
      * @return the exit
      */
-    public Exit getExit() {
+    Exit getExit() {
         return this.myExit;
     }
 
@@ -282,7 +281,7 @@ public class Door {
         this.archwayFlag = false;
         this.lockFlag = false;
         this.myExit = new Exit();
-        this.spaceList = new ArrayList<Space>(); // index 0 will be previous space, 1 will be next space
+        this.spaceList = new ArrayList<>();
     }
 
     private void makeDescription() {
