@@ -30,15 +30,12 @@ public final class Main {
         /* Making 5 Chambers, each with at least 1 door */
         System.out.println("Making 5 Chambers");
         for (int i = 0; i < 5; i++) {
-            do {
-                tempChamber = new Chamber();
-            } while (tempChamber.getDoors().size() == 0);
-
+            tempChamber = new Chamber();
             myLevel.addChamber(tempChamber);
         }
 
         for (int i = 0; i < 5; i++) {
-            System.out.println("\tChamber: " + myLevel.getChambers().get(i).toString() + " Door count: " + myLevel.getAvailableDoorCount(i));
+            System.out.println("\tChamber: " + myLevel.getChambers().get(i).toString() + " Door count: " + myLevel.getChamberAvailableDoorCount(i));
         }
 
 
@@ -53,7 +50,7 @@ public final class Main {
         /* Go through every door in every chamber and select a target(incrementing to the next) */
         for (int i = 0; i < 5; i++) {
             System.out.println("\nChamber" + i);
-            for (int k = 0; myLevel.getAvailableDoorCount(i) > 0; k++) {
+            for (int k = 0; myLevel.getChamberAvailableDoorCount(i) > 0; k++) {
 
                 /* if target is the chamber the door already belongs too, skip over */
                 p = 0;
@@ -67,7 +64,7 @@ public final class Main {
                 /* myLevel.getSpaces().get(i).getDoors().get(k).addSpace(myLevel.getSpaces().get(k+p)); */
 
                 /* Updating doors */
-                myLevel.reduceAvailableDoorCount(i);
+                myLevel.reduceChamberAvailableDoorCount(i);
             }
         }
 

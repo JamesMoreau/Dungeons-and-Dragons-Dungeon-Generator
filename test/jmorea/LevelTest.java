@@ -108,7 +108,7 @@ public class LevelTest {
         Level myTestLevel = new Level();
 
         myTestLevel.addChamber(new Chamber());
-        
+
         if (myTestLevel.getChamberCount() == 1) {
             result = true;
         } else {
@@ -176,18 +176,18 @@ public class LevelTest {
         Chamber tempChamber;
         Level myLevel = new Level();
 
-        /* Making 5 Chambers, each with at least 1 door */
+        /* Making 5 Chambers */
         for (int i = 0; i < 5; i++) {
             tempChamber = new Chamber();
             myLevel.addChamber(tempChamber);
         }
 
         for (int i = 0; i < 5; i++) {
-            myLevel.reduceAvailableDoorCount(i);
+            myLevel.reduceChamberAvailableDoorCount(i);
         }
 
         for(int i = 0; i < 5; i++) {
-            assertEquals(myLevel.getChambers().get(i).getDoors().size(), (myLevel.getAvailableDoorCount(i) + 1));
+            assertEquals(myLevel.getChambers().get(i).getDoors().size(), (myLevel.getChamberAvailableDoorCount(i) + 1));
         }
 
     }

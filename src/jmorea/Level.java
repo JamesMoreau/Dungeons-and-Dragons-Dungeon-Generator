@@ -31,7 +31,7 @@ public class Level {
     /**
      * Door counts for each Chamber.
      */
-    private ArrayList<Integer> spaceAvailableDoorCounts;
+    private ArrayList<Integer> chamberAvailableDoorCounts;
 
 
     /**
@@ -41,7 +41,7 @@ public class Level {
         this.myChambers = new ArrayList<>();
         this.myPassages = new ArrayList<>();
         this.myMap = new HashMap<>();
-        this.spaceAvailableDoorCounts = new ArrayList<>();
+        this.chamberAvailableDoorCounts = new ArrayList<>();
     }
 
     /**
@@ -133,6 +133,7 @@ public class Level {
      */
     void addChamber(Chamber theChamber) {
         this.myChambers.add(theChamber);
+        this.chamberAvailableDoorCounts.add(theChamber.getDoors().size());
     }
 
     /**
@@ -166,13 +167,13 @@ public class Level {
      * @return the available door count for that chamber
      */
     // TODO write test for this. add in report.
-    int getAvailableDoorCount(int i) {
-        if (i >= this.spaceAvailableDoorCounts.size()) {
+    int getChamberAvailableDoorCount(int i) {
+        if (i >= this.chamberAvailableDoorCounts.size()) {
             System.out.println("Desired Chamber index does not exist");
             return -1;
         }
 
-        return (this.spaceAvailableDoorCounts.get(i));
+        return (this.chamberAvailableDoorCounts.get(i));
     }
 
 
@@ -180,11 +181,11 @@ public class Level {
      * Reduces the number of available doors in a given chamber.
      * @param i the index of the space.
      */
-    void reduceAvailableDoorCount(int i) {
-        if (i >= this.spaceAvailableDoorCounts.size()) {
+    void reduceChamberAvailableDoorCount(int i) {
+        if (i >= this.chamberAvailableDoorCounts.size()) {
             System.out.println("Desired Chamber index does not exist");
         } else {
-            this.spaceAvailableDoorCounts.set(i, (this.spaceAvailableDoorCounts.get(i) - 1));
+            this.chamberAvailableDoorCounts.set(i, (this.chamberAvailableDoorCounts.get(i) - 1));
         }
     }
 

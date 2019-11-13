@@ -26,7 +26,7 @@
   <target name="compile" depends="init" 
         description="compile the source">
     <javac classpath="build" classpathref="lib.path" includeantruntime="false" srcdir="${src}" destdir="${build}"/>
-    <echo message="RUN WITH:java -cp &quot;build:lib dnd-A3.jar&quot; jmorea.Main" />
+    <echo message="RUN WITH:java -cp &quot;build:lib/dnd-A3.jar&quot; jmorea.Main" />
   </target>
 
     <target name="junitcompile" depends="compile" 
