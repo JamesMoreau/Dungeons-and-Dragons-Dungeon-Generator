@@ -87,8 +87,10 @@ public class LevelTest {
         System.out.println("isDone");
         boolean result;
         Level myTestLevel = new Level();
-        
-        myTestLevel.setChamberCount(21);
+
+        for(int i = 0; i <10 ; i++) {
+            myTestLevel.addChamber(new Chamber());
+        }
 
         if(myTestLevel.isDone()) {
             result = true;
@@ -100,14 +102,14 @@ public class LevelTest {
     }
 
     @Test
-    public void testSetChamberCount_GetChamberCount() {
-        System.out.println("setChamberCount\ngetChamberCount");
+    public void testAddChamber_GetChamberCount() {
+        System.out.println("getChamberCount");
         boolean result;
         Level myTestLevel = new Level();
+
+        myTestLevel.addChamber(new Chamber());
         
-        myTestLevel.setChamberCount(3);
-        
-        if (myTestLevel.getChamberCount() == 3) {
+        if (myTestLevel.getChamberCount() == 1) {
             result = true;
         } else {
             result = false;
@@ -117,37 +119,14 @@ public class LevelTest {
     }
 
     @Test
-    public void testSetPassageCount_getPassageCount() {
-        System.out.println("setPassageCount\ngetPassageCount");
+    public void testAddPassage_getPassageCount() {
+        System.out.println("getPassageCount");
 
         boolean result;
         Level myTestLevel = new Level();
+        myTestLevel.addPassage(new Passage());
 
-        myTestLevel.setPassageCount(41);
-
-        if(myTestLevel.getPassageCount() == 41) {
-            result = true;
-        } else {
-            result = false;
-        }
-
-        assertEquals(true, result);
-    }
-
-
-    @Test
-    public void testAddSpace_GetSpaces() {
-        System.out.println("addSpaces\ngetSpaces");
-
-        Level myLevel = new Level();
-        boolean result;
-
-        for (int i = 0; i<7; i++) {
-            myLevel.addSpace(new Chamber());
-            myLevel.addSpace(new Passage());
-        }
-
-        if(myLevel.getSpaces().size() == 14) {
+        if(myTestLevel.getPassageCount() == 1) {
             result = true;
         } else {
             result = false;
@@ -159,18 +138,19 @@ public class LevelTest {
     @Test
     public void testClearLevel() {
         System.out.println("clearLevel");
+        Level myLevel;
 
-        Level myLevel = new Level();
+        myLevel = new Level();
         boolean result;
 
         for (int i = 0; i < 7; i++) {
-            myLevel.addSpace(new Chamber());
-            myLevel.addSpace(new Passage());
+            myLevel.addChamber(new Chamber());
+            myLevel.addPassage(new Passage());
         }
 
         myLevel.clearLevel();
 
-        if (myLevel.getSpaces().size() == 0) {
+        if ((myLevel.getChambers().size() == 0) && (myLevel.getPassages().size() == 0)) {
             result = true;
         } else {
             result = false;
@@ -187,7 +167,7 @@ public class LevelTest {
         Chamber testChamber = new Chamber();
         testLevel.addChamber(testChamber);
 
-        assertEquals(testChamber, testLevel.getSpaces().get(0));
+        assertEquals(testChamber, testLevel.getChambers().get(0));
     }
 
     @Test
@@ -198,10 +178,7 @@ public class LevelTest {
 
         /* Making 5 Chambers, each with at least 1 door */
         for (int i = 0; i < 5; i++) {
-            do {
-                tempChamber = new Chamber();
-            } while (tempChamber.getDoors().size() == 0);
-
+            tempChamber = new Chamber();
             myLevel.addChamber(tempChamber);
         }
 
@@ -210,7 +187,7 @@ public class LevelTest {
         }
 
         for(int i = 0; i < 5; i++) {
-            assertEquals(myLevel.getSpaces().get(i).getDoors().size(), (myLevel.getAvailableDoorCount(i) + 1));
+            assertEquals(myLevel.getChambers().get(i).getDoors().size(), (myLevel.getAvailableDoorCount(i) + 1));
         }
 
     }

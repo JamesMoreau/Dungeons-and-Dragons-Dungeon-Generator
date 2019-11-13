@@ -9,19 +9,14 @@ import java.util.HashMap;
 public class Level {
 
     /**
-     * Arraylist of passages and chambers in this dungeon.
+     * Arraylist of chambers in this dungeon.
      */
-    private ArrayList<Space> mySpaces;
+    private ArrayList<Chamber> myChambers;
 
     /**
-     * Count of chambers in dungeon.
+     * Array list of passages in this dungeon.
      */
-    private int chamberCount;
-
-    /**
-     * Count of passages in dungeon.
-     */
-    private int passageCount;
+    private ArrayList<Passage> myPassages;
 
     /**
      * Flag describing end status of dungeon.
@@ -43,37 +38,10 @@ public class Level {
      * Creates a blank level.
      */
     public Level() {
-        this.mySpaces = new ArrayList<>();
+        this.myChambers = new ArrayList<>();
+        this.myPassages = new ArrayList<>();
         this.myMap = new HashMap<>();
         this.spaceAvailableDoorCounts = new ArrayList<>();
-        setChamberCount(0);
-        setPassageCount(0);
-    }
-
-    /**
-     * Adds a chamber to level.
-     * @param lastSpace the last space created
-     * @param d Door chosen to go through
-     */
-    @Deprecated
-    public void addChamber(Space lastSpace, Door d) {
-        Chamber newChamber = new Chamber();
-        d.setTwoSpace(newChamber);
-        this.mySpaces.add(newChamber);
-        this.chamberCount++;
-    }
-
-    /**
-     * Adds a passage to level.
-     * @param lastSpace the last space created
-     * @param d Door chosen to go through
-     */
-    @Deprecated
-    public void addPassage(Space lastSpace, Door d) {
-        Passage newPassage = new Passage();
-        d.setSpaces(lastSpace, newPassage);
-        this.mySpaces.add(newPassage);
-        this.passageCount++;
     }
 
     /**
@@ -124,15 +92,7 @@ public class Level {
      * @return whether the dungeon is done
      */
     boolean isDone() {
-        return (this.chamberCount > 5);
-    }
-
-    /**
-     * Sets chamber count in level.
-     * @param x boolean used to set level's chamber count
-     */
-    void setChamberCount(int x) {
-        this.chamberCount = x;
+        return (this.myChambers.size() > 5);
     }
 
     /**
@@ -140,15 +100,7 @@ public class Level {
      * @return chamberCount
      */
     int getChamberCount() {
-        return this.chamberCount;
-    }
-
-    /**
-     * Sets passage count in level.
-     * @param x boolean used to set level's passage count.
-     */
-    void setPassageCount(int x) {
-        this.passageCount = x;
+        return this.myChambers.size();
     }
 
     /**
@@ -156,23 +108,39 @@ public class Level {
      * @return passageCount
      */
     int getPassageCount() {
-        return this.passageCount;
+        return this.myPassages.size();
     }
 
     /**
-     * Returns array list of spaces in level.
-     * @return mySpaces
+     * Returns array list of chambers in level.
+     * @return myChambers
      */
-    ArrayList<Space> getSpaces() {
-        return this.mySpaces;
+    ArrayList<Chamber> getChambers() {
+        return this.myChambers;
     }
 
     /**
-     * Adds a space to the space list.
-     * @param theSpace space to be added
+     * Returns array list of passages in level.
+     * @return myPassages
      */
-    void addSpace(Space theSpace) {
-        this.mySpaces.add(theSpace);
+    ArrayList<Passage> getPassages() {
+        return this.myPassages;
+    }
+
+    /**
+     * Adds a chamber to the chamber list.
+     * @param theChamber chamber to be added
+     */
+    void addChamber(Chamber theChamber) {
+        this.myChambers.add(theChamber);
+    }
+
+    /**
+     * Adds a passage to the passage list.
+     * @param thePassage chamber to be added
+     */
+    void addPassage(Passage thePassage) {
+        this.myPassages.add(thePassage);
     }
 
     /**
@@ -188,30 +156,8 @@ public class Level {
      * Clears the level.
      */
     void clearLevel() {
-        this.mySpaces.clear();
-        setPassageCount(0);
-        setChamberCount(0);
-    }
-
-    /**
-     * Adds a chamber to the arralist of spaces and records its door count.
-     * @param toAdd the Chamber to be added to the spacelist
-     */
-    void addChamber(Chamber toAdd) {
-        mySpaces.add(toAdd);
-        this.spaceAvailableDoorCounts.add(toAdd.getDoors().size());
-        this.chamberCount++;
-    }
-
-    /**
-     * Adds a passage to the arraylist of spaces andd records its door count.
-     * @param toAdd the Passage to be added to the spacelist
-     */
-    // TODO write test for this. add in report.
-    void addPassage(Passage toAdd) {
-        mySpaces.add(toAdd);
-        this.spaceAvailableDoorCounts.add(toAdd.getDoors().size());
-        this.passageCount++;
+        this.myChambers.clear();
+        this.myPassages.clear();
     }
 
     /**
@@ -280,11 +226,11 @@ public class Level {
         ArrayList<Chamber> temp;
 
         for (int i = 0; i < 5; i++) { // looping over every chamber
-            c = (Chamber) this.getSpaces().get(i);
+            c = this.getChambers().get(i);
 
-            for (int j = 0; j < this.mySpaces.get(i).getDoors().size(); j++) { //looping over every door in that chamber
+            for (int j = 0; j < this.myChambers.get(i).getDoors().size(); j++) { //looping over every door in that chamber
 
-                temp = myMap.get(this.mySpaces.get(i).getDoors().get(j)); //temp is the chamber the door is targeting
+                temp = myMap.get(this.myChambers.get(i).getDoors().get(j)); //temp is the chamber the door is targeting
 
                 for (int k = 0; k < temp.get(0).getDoors().size(); k++) {
                     if ((myMap.get(temp.get(0).getDoors().get(k))).get(0) == c) { //doors are pointing at each other's chamber's UwU

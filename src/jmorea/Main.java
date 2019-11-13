@@ -38,16 +38,16 @@ public final class Main {
         }
 
         for (int i = 0; i < 5; i++) {
-            System.out.println("\tChamber: " + myLevel.getSpaces().get(i).toString() + " Door count: " + myLevel.getAvailableDoorCount(i));
+            System.out.println("\tChamber: " + myLevel.getChambers().get(i).toString() + " Door count: " + myLevel.getAvailableDoorCount(i));
         }
 
 
         /* finding how many boring passages ill need */
         sum = 0;
-        for (Space space : myLevel.getSpaces()) {
-            sum += space.getDoors().size();
+        for (Chamber c : myLevel.getChambers()) {
+            sum += c.getDoors().size();
         }
-        System.out.println("Total Doors is " + sum + "\nNumber of spaces is " + myLevel.getSpaces().size());
+        System.out.println("Total Doors is " + sum + "\nNumber of spaces is " + myLevel.getChambers().size());
 
 
         /* Go through every door in every chamber and select a target(incrementing to the next) */
@@ -63,7 +63,7 @@ public final class Main {
 
                 /* Making door targets */
                 System.out.println("Door " + k + " targeting chamber "  + (k + p));
-                myLevel.selectChamberTarget(myLevel.getSpaces().get(i).getDoors().get(k), (Chamber) myLevel.getSpaces().get(k + p));
+                myLevel.selectChamberTarget(myLevel.getChambers().get(i).getDoors().get(k), (Chamber) myLevel.getChambers().get(k + p));
                 /* myLevel.getSpaces().get(i).getDoors().get(k).addSpace(myLevel.getSpaces().get(k+p)); */
 
                 /* Updating doors */
@@ -81,15 +81,15 @@ public final class Main {
             myLevel.addPassage(tempPassage);
         }
 
-        for (int i = 5; i < sum + 5; i++) {
-            System.out.println("\tPassage: " + myLevel.getSpaces().get(i).toString() + " Door count: " + myLevel.getAvailableDoorCount(i));
+        for (int i = 0; i < 5; i++) {
+            System.out.println("\tPassage: " + myLevel.getPassages().get(i).toString());
         }
 
 
         /* Making Description */
         for (int i = 0; i < 5; i++) {
             finalDescription.append("\n").append(i + 1).append(":");
-            finalDescription.append(myLevel.getSpaces().get(i).getDescription());
+            finalDescription.append(myLevel.getChambers().get(i).getDescription());
         }
         System.out.println(finalDescription.toString());
     }
