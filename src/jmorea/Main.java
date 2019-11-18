@@ -60,7 +60,7 @@ public final class Main {
 
                 /* Making door targets */
                 System.out.println("Door " + k + " targeting chamber "  + (k + p));
-                myLevel.selectChamberTarget(myLevel.getChambers().get(i).getDoors().get(k), myLevel.getChambers().get(k + p));
+                myLevel.selectChamberTarget(myLevel.getChambers().get(i).getDoors().get(k), (Chamber) myLevel.getChambers().get(k + p));
                 /* myLevel.getSpaces().get(i).getDoors().get(k).addSpace(myLevel.getSpaces().get(k+p)); */
 
                 /* Updating doors */
