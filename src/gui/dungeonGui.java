@@ -29,8 +29,13 @@ public class dungeonGui<toReturn> extends Application {
 
     @Override
     public void start(Stage assignedStage) {
+        primaryStage = assignedStage;
         primaryStage.setTitle("Dungeon Generation App");
+        FlowPane rootNode = new FlowPane();
 
+        Scene myScene = new Scene(rootNode, 800, 600);
+
+        primaryStage.setScene(myScene);
         primaryStage.show();
     }
 
@@ -72,8 +77,13 @@ public class dungeonGui<toReturn> extends Application {
 
     }
 
-    public static void main(String[] args) {
-        Application.launch(args);
+    private BorderPane setUpRoot() {
+        BorderPane var1 = new BorderPane();
+        var1.setTop(new Label("The name or identifier of the thing below"));
+        return var1;
+    }
 
+    public static void main(String[] args) {
+        launch(args);
     }
 }
