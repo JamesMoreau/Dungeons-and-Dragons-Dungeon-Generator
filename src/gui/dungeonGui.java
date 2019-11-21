@@ -3,6 +3,7 @@ package gui;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -35,15 +37,12 @@ public class dungeonGui<toReturn> extends Application {
     @Override
     public void start(Stage assignedStage) {
         primaryStage = assignedStage;
-        primaryStage.setTitle("Dungeon Generation App");
-
+        primaryStage.setTitle("Dungeon Generator");
 
         this.root = setUpRoot();
 
-        Scene myScene = new Scene(root, 800, 600);
-        setApplicationIcon("res/my_Ghidra_application_icon.png");
-
-
+        Scene myScene = new Scene(root, 700, 500);
+        setApplicationIcon();
 
         primaryStage.setScene(myScene);
         primaryStage.show();
@@ -87,17 +86,18 @@ public class dungeonGui<toReturn> extends Application {
 
     }
 
-    private void setApplicationIcon(String path) {
-        this.primaryStage.getIcons().add(new Image(path));
+    private void setApplicationIcon() {
+        this.primaryStage.getIcons().add(new Image("res/my_Ghidra_application_icon.png"));
     }
 
     private BorderPane setUpRoot() {
         BorderPane rootNode = new BorderPane();
 
-        rootNode.setLeft(new Label("Chamber Passage Selection"));
-        rootNode.setLeft(createListView());
+        rootNode.setLeft(setupLeftVBox());
 
-        rootNode.setRight(createComboBox());
+        rootNode.setRight(setupRightVBox());
+
+        rootNode.setCenter(setupSpaceView());
 
         return rootNode;
     }
@@ -105,12 +105,14 @@ public class dungeonGui<toReturn> extends Application {
     private Node createListView() {
         ListView listView = new ListView();
 
-        listView.setPrefWidth(150);
-        listView.setPrefHeight(150);
+        listView.setPrefWidth(125);
+        listView.setPrefHeight(300);
 
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
+        listView.getItems().add("Chamber 1");
+        listView.getItems().add("Chamber 2");
+        listView.getItems().add("Chamber 3");
+        listView.getItems().add("Chamber 4");
+        listView.getItems().add("Chamber 5");
 
         listView.setOnMouseClicked((MouseEvent event)->{
             System.out.println("clicked on " + listView.getSelectionModel().getSelectedItem());
@@ -119,18 +121,50 @@ public class dungeonGui<toReturn> extends Application {
         return listView;
     }
 
+    private Node setupLeftVBox() {
+        Label myLbl = new Label("Chamber/Passage Selection");
+
+        VBox vBox = new VBox(myLbl, createListView());
+        vBox.setPadding(new Insets(10, 0, 0, 10));
+
+        return vBox;
+    }
+
+    private Node setupRightVBox() {
+
+        Label myLbl = new Label("Select Door");
+
+        VBox vBox = new VBox(myLbl, createComboBox());
+        vBox.setPadding(new Insets(10, 10, 0, 0));
+
+        return vBox;
+    }
+
     private Node createComboBox() {
         ComboBox comboBox = new ComboBox();
+
+        comboBox.setPrefWidth(100);
 
         comboBox.getItems().add("Choice 1");
         comboBox.getItems().add("Choice 2");
         comboBox.getItems().add("Choice 3");
+
+        comboBox.setValue("Door");
 
         comboBox.setOnMouseClicked((MouseEvent event)->{
             System.out.println("clicked on " + comboBox.getSelectionModel().getSelectedItem());
         });
 
         return comboBox;
+    }
+
+    private Node setupSpaceView() {
+        GridPane myRoom = new ChamberView(4,4);
+        myRoom.setPadding(new Insets(20,10,10,10));
+        myRoom.setAlignment(Pos.TOP_CENTER);
+        myRoom.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        return myRoom;
     }
 
     private void makeEditButton() {
