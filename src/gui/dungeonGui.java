@@ -8,11 +8,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -20,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import java.util.List;
 
 
 public class dungeonGui<toReturn> extends Application {
@@ -38,9 +38,12 @@ public class dungeonGui<toReturn> extends Application {
         primaryStage.setTitle("Dungeon Generation App");
 
 
-        BorderPane rootNode = new BorderPane();
-        Scene myScene = new Scene(rootNode, 800, 600);
-        setApplicationIcon();
+        this.root = setUpRoot();
+
+        Scene myScene = new Scene(root, 800, 600);
+        setApplicationIcon("res/my_Ghidra_application_icon.png");
+
+
 
         primaryStage.setScene(myScene);
         primaryStage.show();
@@ -84,8 +87,50 @@ public class dungeonGui<toReturn> extends Application {
 
     }
 
-    private void setApplicationIcon() {
-        this.primaryStage.getIcons().add(new Image("res/my_Ghidra_application_icon.png" ));
+    private void setApplicationIcon(String path) {
+        this.primaryStage.getIcons().add(new Image(path));
+    }
+
+    private BorderPane setUpRoot() {
+        BorderPane rootNode = new BorderPane();
+
+        rootNode.setLeft(new Label("Chamber Passage Selection"));
+        rootNode.setLeft(createListView());
+
+        rootNode.setRight(createComboBox());
+
+        return rootNode;
+    }
+
+    private Node createListView() {
+        ListView listView = new ListView();
+
+        listView.setPrefWidth(150);
+        listView.setPrefHeight(150);
+
+        listView.getItems().add("Item 1");
+        listView.getItems().add("Item 2");
+        listView.getItems().add("Item 3");
+
+        listView.setOnMouseClicked((MouseEvent event)->{
+            System.out.println("clicked on " + listView.getSelectionModel().getSelectedItem());
+        });
+
+        return listView;
+    }
+
+    private Node createComboBox() {
+        ComboBox comboBox = new ComboBox();
+
+        comboBox.getItems().add("Choice 1");
+        comboBox.getItems().add("Choice 2");
+        comboBox.getItems().add("Choice 3");
+
+        comboBox.setOnMouseClicked((MouseEvent event)->{
+            System.out.println("clicked on " + comboBox.getSelectionModel().getSelectedItem());
+        });
+
+        return comboBox;
     }
 
     private void makeEditButton() {
