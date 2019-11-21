@@ -11,3 +11,6 @@ jmorea03@uoguelph.ca<br/>
 RUN PROGRAM WITH: "java -cp "build:lib/A3-dnd.jar" jmorea.Main" <- FIX THIS.
 
 RUN JUNIT WITH: "ant junit"
+
+SOURCES:
+ghidraIcon: https://ghidra-sre.org/

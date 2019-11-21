@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,6 +16,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
 
 
 public class dungeonGui<toReturn> extends Application {
@@ -31,9 +36,11 @@ public class dungeonGui<toReturn> extends Application {
     public void start(Stage assignedStage) {
         primaryStage = assignedStage;
         primaryStage.setTitle("Dungeon Generation App");
-        FlowPane rootNode = new FlowPane();
 
+
+        BorderPane rootNode = new BorderPane();
         Scene myScene = new Scene(rootNode, 800, 600);
+        setApplicationIcon();
 
         primaryStage.setScene(myScene);
         primaryStage.show();
@@ -77,10 +84,12 @@ public class dungeonGui<toReturn> extends Application {
 
     }
 
-    private BorderPane setUpRoot() {
-        BorderPane var1 = new BorderPane();
-        var1.setTop(new Label("The name or identifier of the thing below"));
-        return var1;
+    private void setApplicationIcon() {
+        this.primaryStage.getIcons().add(new Image("res/my_Ghidra_application_icon.png" ));
+    }
+
+    private void makeEditButton() {
+        Button editButton = createButton("Hello world", "-fx-background-color: #ff0000; -fx-background-radius: 10, 10, 10, 10;");
     }
 
     public static void main(String[] args) {
