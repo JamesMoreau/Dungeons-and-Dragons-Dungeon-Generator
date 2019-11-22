@@ -1,9 +1,13 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -20,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
@@ -172,13 +177,13 @@ public class dungeonGui<toReturn> extends Application {
 
         this.myDoorsList.setPrefWidth(150);
         this.myDoorsList.setVisibleRowCount(6);
-        this.myDoorsList.setValue("List of Doors");
+        //this.myDoorsList.setValue("List of Doors");
 
     }
 
     private void updateDoorList() {
         this.myDoorsList.getItems().clear();
-        this.myDoorsList.setValue("List of Doors");
+        //this.myDoorsList.setValue("List of Doors");
 
         System.out.println(myListView.getSelectionModel().getSelectedItem());
         if (myListView.getSelectionModel().getSelectedItem() != null) {
@@ -186,13 +191,19 @@ public class dungeonGui<toReturn> extends Application {
                 this.myDoorsList.getItems().add("Door " + i);
             }
         }
-        //createButton("Door " + i, "-fx-background-color: #FFFFFF; ")
-        //new Label("Door " + i)
+
+        this.myDoorsList.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println(myDoorsList.getValue());
+            }
+        });
 
         //TODO action should only occur on dropDown items. Nulls?
-        this.myDoorsList.setOnMouseClicked ((MouseEvent event)-> {
-            System.out.println("clicked on " + this.myDoorsList.getSelectionModel().getSelectedItem());
-        });
+        /*this.myDoorsList.getItems().add((options, oldValue, newValue) -> {
+                    System.out.println(newValue);
+                }
+        );*/
     }
 
     private Node setupSpaceView() {
