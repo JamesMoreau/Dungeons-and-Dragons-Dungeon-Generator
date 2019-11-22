@@ -186,7 +186,8 @@ public class dungeonGui<toReturn> extends Application {
                 this.myDoorsList.getItems().add("Door " + i);
             }
         }
-
+        //createButton("Door " + i, "-fx-background-color: #FFFFFF; ")
+        //new Label("Door " + i)
 
         //TODO action should only occur on dropDown items. Nulls?
         this.myDoorsList.setOnMouseClicked ((MouseEvent event)-> {
