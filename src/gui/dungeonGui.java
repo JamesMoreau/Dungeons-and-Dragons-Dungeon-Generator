@@ -3,6 +3,7 @@ package gui;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -31,17 +33,21 @@ public class dungeonGui<toReturn> extends Application {
      */
     private Controller theController;
     private BorderPane root;  //the root element of this GUI
-    private Popup descriptionPane;
     private Stage primaryStage;  //The stage that is passed in on initialization
+    private TextArea textArea;
+    private ListView myListView;
+    private ComboBox myDoorsList;
 
     @Override
     public void start(Stage assignedStage) {
+        this.theController = new Controller(this);
+
         primaryStage = assignedStage;
         primaryStage.setTitle("Dungeon Generator");
 
         this.root = setUpRoot();
 
-        Scene myScene = new Scene(root, 700, 500);
+        Scene myScene = new Scene(root, 700, 720);
         setApplicationIcon();
 
         primaryStage.setScene(myScene);
@@ -74,18 +80,6 @@ public class dungeonGui<toReturn> extends Application {
         return btn;
     }
 
-    private void changeDescriptionText(String text) {
-        ObservableList<Node> list = descriptionPane.getContent();
-        for (Node t : list) {
-            if (t instanceof TextArea) {
-                TextArea temp = (TextArea) t;
-                temp.setText(text);
-            }
-
-        }
-
-    }
-
     private void setApplicationIcon() {
         this.primaryStage.getIcons().add(new Image("res/my_Ghidra_application_icon.png"));
     }
@@ -99,76 +93,114 @@ public class dungeonGui<toReturn> extends Application {
 
         rootNode.setCenter(setupSpaceView());
 
+        rootNode.setBottom(setupBottomTextBox());
+
         return rootNode;
     }
 
-    private Node createListView() {
-        ListView listView = new ListView();
+    private Node createSpaceListView() {
+        this.myListView = new ListView();
 
-        listView.setPrefWidth(125);
-        listView.setPrefHeight(300);
+        myListView.setPrefWidth(125);
+        myListView.setPrefHeight(300);
 
-        listView.getItems().add("Chamber 1");
-        listView.getItems().add("Chamber 2");
-        listView.getItems().add("Chamber 3");
-        listView.getItems().add("Chamber 4");
-        listView.getItems().add("Chamber 5");
+        for(int i = 0; i < theController.getChambersList().size(); i++) {
+            myListView.getItems().add("Chamber " + (i+1));
+        }
 
-        listView.setOnMouseClicked((MouseEvent event)->{
-            System.out.println("clicked on " + listView.getSelectionModel().getSelectedItem());
+        myListView.setOnMouseClicked((MouseEvent event)->{
+            System.out.println("clicked on " + myListView.getSelectionModel().getSelectedItem());
+            this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
+            updateDoorList();
         });
 
-        return listView;
+        return myListView;
     }
 
     private Node setupLeftVBox() {
         Label myLbl = new Label("Chamber/Passage Selection");
 
-        VBox vBox = new VBox(myLbl, createListView());
-        vBox.setPadding(new Insets(10, 0, 0, 10));
+        VBox vBox = new VBox(myLbl, createSpaceListView(), createEditButton());
+        vBox.setPadding(new Insets(10, 10, 10, 10));
 
         return vBox;
     }
+
+    private Node createEditButton() {
+        Button editButton = createButton("Edit", "-fx-background-color: #FFFFFF; ");
+
+        editButton.setOnAction((ActionEvent event) -> {
+            theController.reactToEditButton();
+        });
+
+        //editButton.setPadding(new Insets(10,5,5,10));
+
+        return editButton;
+    }
+
 
     private Node setupRightVBox() {
 
         Label myLbl = new Label("Select Door");
+        setupDoorList();
 
-        VBox vBox = new VBox(myLbl, createComboBox());
-        vBox.setPadding(new Insets(10, 10, 0, 0));
+        VBox vBox = new VBox(myLbl, myDoorsList); //empty combo box
+        vBox.setPadding(new Insets(10, 10, 0, 10));
 
         return vBox;
     }
 
-    private Node createComboBox() {
-        ComboBox comboBox = new ComboBox();
+    private Node setupBottomTextBox() {
+        this.textArea = new TextArea();
 
-        comboBox.setPrefWidth(100);
+        //textArea.setPrefWidth(250);
+        textArea.setPrefHeight(400);
+        textArea.setWrapText(true);
+        textArea.editableProperty().setValue(false);
+        textArea.setPadding(new Insets(5,20,5,20));
+        textArea.contextMenuProperty().unbind();
+        textArea.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
 
-        comboBox.getItems().add("Choice 1");
-        comboBox.getItems().add("Choice 2");
-        comboBox.getItems().add("Choice 3");
 
-        comboBox.setValue("Door");
+        textArea.setText("N/A\n");
 
-        comboBox.setOnMouseClicked((MouseEvent event)->{
-            System.out.println("clicked on " + comboBox.getSelectionModel().getSelectedItem());
+        return  textArea;
+    }
+
+    private void setupDoorList() {
+        this.myDoorsList = new ComboBox();
+
+        this.myDoorsList.setPrefWidth(150);
+        this.myDoorsList.setVisibleRowCount(6);
+        this.myDoorsList.setValue("List of Doors");
+
+    }
+
+    private void updateDoorList() {
+        this.myDoorsList.getItems().clear();
+        this.myDoorsList.setValue("List of Doors");
+
+        System.out.println(myListView.getSelectionModel().getSelectedItem());
+        if (myListView.getSelectionModel().getSelectedItem() != null) {
+            for (int i = 0; i < theController.getChambersList().get(myListView.getSelectionModel().getSelectedIndex()).getDoors().size(); i++) {
+                this.myDoorsList.getItems().add("Door " + i);
+            }
+        }
+
+
+        //TODO action should only occur on dropDown items. Nulls?
+        this.myDoorsList.setOnMouseClicked ((MouseEvent event)-> {
+            System.out.println("clicked on " + this.myDoorsList.getSelectionModel().getSelectedItem());
         });
-
-        return comboBox;
     }
 
     private Node setupSpaceView() {
-        GridPane myRoom = new ChamberView(4,4);
-        myRoom.setPadding(new Insets(20,10,10,10));
+        GridPane myRoom = new ChamberView(4, 4);
+        myRoom.setPadding(new Insets(20, 10, 10, 10));
         myRoom.setAlignment(Pos.TOP_CENTER);
         myRoom.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         return myRoom;
-    }
-
-    private void makeEditButton() {
-        Button editButton = createButton("Hello world", "-fx-background-color: #ff0000; -fx-background-radius: 10, 10, 10, 10;");
     }
 
     public static void main(String[] args) {

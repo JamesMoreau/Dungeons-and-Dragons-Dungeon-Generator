@@ -147,8 +147,6 @@ public class Chamber extends Space {
     private void makeChamberDescription() {
         this.myDescription = new StringBuilder();
 
-        this.myDescription.append("\n\n____________Chamber____________\n\n");
-
         this.makeChamberShapeDescription();
         this.makeChamberMonstersDescription();
         this.makeChamberTreasureDescription();
@@ -160,7 +158,7 @@ public class Chamber extends Space {
      */
     private void makeChamberShapeDescription() {
         int area,length, width;
-        this.myDescription.append("\nShape:\n");
+        this.myDescription.append("Shape:\n");
         this.myDescription.append("\tThe chamber is ").append(this.myShape.getShape()).append(".\n");
         try {
             length = myShape.getLength();

@@ -115,7 +115,7 @@ public class Level {
      * Returns array list of chambers in level.
      * @return myChambers
      */
-    ArrayList<Chamber> getChambers() {
+    public ArrayList<Chamber> getChambers() {
         return this.myChambers;
     }
 
@@ -123,7 +123,7 @@ public class Level {
      * Returns array list of passages in level.
      * @return myPassages
      */
-    ArrayList<Passage> getPassages() {
+    public ArrayList<Passage> getPassages() {
         return this.myPassages;
     }
 

@@ -4,23 +4,25 @@ package jmorea;
  /**
  * Dungeon generator class manages algorithm.
  */
-public final class Main {
+public final class Algorithm {
+
+     private Level myLevel;
+
 
     /**
-    * Empty constructor.
+    * sets up algorithm variables.
     */
-    private Main() {
-
+    public Algorithm() {
+        myLevel = new Level();
     }
 
     /**
      * Main algorithm.
      *
-     * @param args N/A takes in no arguments
      */
-    public static void main(String[] args) {
-        /* Main myMain = new Main(); */
-        Level myLevel = new Level();
+    public void performAlgorithm(int count) {
+        myLevel.clearLevel();
+
         StringBuilder finalDescription = new StringBuilder();
         Chamber tempChamber;
         Passage tempPassage;
@@ -29,12 +31,12 @@ public final class Main {
 
         /* Making 5 Chambers, each with at least 1 door */
         System.out.println("Making 5 Chambers");
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < count; i++) {
             tempChamber = new Chamber();
             myLevel.addChamber(tempChamber);
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < count; i++) {
             System.out.println("\tChamber: " + myLevel.getChambers().get(i).toString() + " Door count: " + myLevel.getChamberAvailableDoorCount(i));
         }
 
@@ -48,25 +50,21 @@ public final class Main {
 
 
         /* Go through every door in every chamber and select a target(incrementing to the next) */
-        for (int i = 0; i < 5; i++) {
+        /*for (int i = 0; i < count; i++) {
             System.out.println("\nChamber" + i);
             for (int k = 0; myLevel.getChamberAvailableDoorCount(i) > 0; k++) {
 
-                /* if target is the chamber the door already belongs too, skip over */
                 p = 0;
                 if (k == i) {
                     p++;
                 }
 
-                /* Making door targets */
                 System.out.println("Door " + k + " targeting chamber "  + (k + p));
                 myLevel.selectChamberTarget(myLevel.getChambers().get(i).getDoors().get(k), myLevel.getChambers().get(k + p));
-                /* myLevel.getSpaces().get(i).getDoors().get(k).addSpace(myLevel.getSpaces().get(k+p)); */
 
-                /* Updating doors */
                 myLevel.reduceChamberAvailableDoorCount(i);
             }
-        }
+        }*/
 
         myLevel.printLevel();
 
@@ -78,17 +76,24 @@ public final class Main {
             myLevel.addPassage(tempPassage);
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < count; i++) {
             System.out.println("\tPassage: " + myLevel.getPassages().get(i).toString());
         }
 
 
         /* Making Description */
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < count; i++) {
             finalDescription.append("\n").append(i + 1).append(":");
             finalDescription.append(myLevel.getChambers().get(i).getDescription());
         }
         System.out.println(finalDescription.toString());
+    }
+
+     /**
+      * Returns the level created by the algorithm.
+      */
+    public Level getLevel() {
+        return this.myLevel;
     }
 
 }
