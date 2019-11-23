@@ -177,6 +177,12 @@ public class Passage extends Space {
         }
     }
 
+    public String makeDoorDescription(int i) {
+        StringBuilder s = new StringBuilder();
+
+        return s.toString();
+    }
+
     /**
      * Makes Passage boring, i.e., 2 plain passage sections, 2 doors.
      */

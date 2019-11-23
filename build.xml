@@ -138,6 +138,20 @@
 		<echo if:set="isMac"> Mac OS </echo>
     <echo message="OS Name is:         ${os.name}" />
   </target>
+
+<!-- CheckStyle Configuration and task. Does not run automatically -->
+<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+         classpath="checkstyle/checkstyle-8.24-all.jar"/>
+<target name="checkstyle"
+        description="Generates a report of code convention violations.">
+
+    <checkstyle config="checkstyle/A2CheckStyle.xml"
+                failureProperty="checkstyle.failure"
+                failOnViolation="false">
+        <fileset dir="src" includes="**/*.java"/>
+    </checkstyle>
+
+</target>
  
 
   

@@ -22,22 +22,22 @@ public class ChamberView extends GridPane {
 
         Node[] tiles = makeTiles();
         //should definitely be a loop and possibly a method
-        add(tiles[0],0,0,1,1);
-        add(tiles[1],0,1,1,1);
-        add(tiles[2],0,2,1,1);
-        add(tiles[3],0,3,1,1);
-        add(tiles[4],1,0,1,1);
-        add(tiles[5],1,1,1,1);
-        add(tiles[6],1,2,1,1);
-        add(tiles[7],1,3,1,1);
-        add(tiles[8],2,0,1,1);
-        add(tiles[9],2,1,1,1);
-        add(tiles[10],2,2,1,1);
-        add(tiles[11],2,3,1,1);
-        add(tiles[12],3,0,1,1);
-        add(tiles[13],3,1,1,1);
-        add(tiles[14],3,2,1,1);
-        add(tiles[15],3,3,1,1);
+        add(tiles[0], 0, 0, 1, 1);
+        add(tiles[1], 0, 1, 1, 1);
+        add(tiles[2], 0, 2, 1, 1);
+        add(tiles[3], 0, 3, 1, 1);
+        add(tiles[4], 1, 0, 1, 1);
+        add(tiles[5], 1, 1, 1, 1);
+        add(tiles[6], 1, 2, 1, 1);
+        add(tiles[7], 1, 3, 1, 1);
+        add(tiles[8], 2, 0, 1, 1);
+        add(tiles[9], 2, 1, 1, 1);
+        add(tiles[10], 2, 2, 1, 1);
+        add(tiles[11], 2, 3, 1, 1);
+        add(tiles[12], 3, 0, 1, 1);
+        add(tiles[13], 3, 1, 1, 1);
+        add(tiles[14], 3, 2, 1, 1);
+        add(tiles[15], 3, 3, 1, 1);
 
     }
 

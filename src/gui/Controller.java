@@ -39,8 +39,16 @@ public class Controller {
         return myAlgo.getLevel().getChambers().get(i).getDescription();
     }
 
-    public String getDoorDescription(int chamberIndex, int doorIndex) {
+    public String getNewPassageDescription(int i) {
+        return myAlgo.getLevel().getPassages().get(i).getDescription();
+    }
+
+    public String getChamberDoorDescription(int chamberIndex, int doorIndex) {
         //System.out.println("getDoorDescription at chamberIndex " + chamberIndex + " and doorIndex " + doorIndex);
         return myAlgo.getLevel().getChambers().get(chamberIndex).makeDoorDescription(doorIndex);
+    }
+
+    public String getPassageDoorDescription(int passageIndex, int doorIndex) {
+        return myAlgo.getLevel().getPassages().get(passageIndex).makeDoorDescription(doorIndex);
     }
 }

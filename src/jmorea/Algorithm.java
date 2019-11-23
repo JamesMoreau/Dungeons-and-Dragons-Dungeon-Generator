@@ -70,7 +70,7 @@ public final class Algorithm {
 
         /* Making boring passages that I can use to connect chambers */
         System.out.println("\nMaking boring Passages");
-        for (int i = 0; i < sum; i++) {
+        for (int i = 0; i < count; i++) {
             tempPassage = new Passage();
             tempPassage.makeBoring();
             myLevel.addPassage(tempPassage);

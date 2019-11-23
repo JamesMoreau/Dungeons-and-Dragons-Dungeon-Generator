@@ -23,6 +23,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import jmorea.Passage;
 
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -113,10 +114,24 @@ public class dungeonGui<toReturn> extends Application {
             myListView.getItems().add("Chamber " + i);
         }
 
+        for(int j = 0; j < theController.getPassageList().size(); j++) {
+            myListView.getItems().add(("Passage " + j));
+        }
+
         myListView.setOnMouseClicked((MouseEvent event)->{
                 //System.out.println("clicked on " + myListView.getSelectionModel().getSelectedItem());
                 //System.out.println("index requested " + myListView.getSelectionModel().getSelectedIndex());
-                this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
+                if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+                    System.out.println("getting chamber from chamberList index " + (myListView.getSelectionModel().getSelectedIndex()));
+                    this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
+
+                } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+                    System.out.println("getting passage from passageList index " + (myListView.getSelectionModel().getSelectedIndex() - 5));
+                    this.textArea.setText(theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - 5));
+
+                } else {
+                    System.out.println("Bad selection.");
+                }
                 updateDoorList();
         });
 
@@ -178,25 +193,39 @@ public class dungeonGui<toReturn> extends Application {
 
         this.myDoorsList.setPrefWidth(150);
         this.myDoorsList.setVisibleRowCount(10);
-        //this.myDoorsList.setValue("List of Doors");
+        this.myDoorsList.setValue("List of Doors");
 
     }
 
     private void updateDoorList() {
-        //this.myDoorsList.getSelectionModel().clearSelection();
         this.myDoorsList.getItems().clear();
-        //System.out.println(this.myDoorsList.getSelectionModel().getSelectedIndex());
 
-        for (int i = 0; i < theController.getChambersList().get(myListView.getSelectionModel().getSelectedIndex()).getDoors().size(); i++) {
-            this.myDoorsList.getItems().add("Door " + i);
+        if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+            for (int i = 0; i < theController.getChambersList().get(myListView.getSelectionModel().getSelectedIndex()).getDoors().size(); i++) {
+                this.myDoorsList.getItems().add("Door " + i);
+            }
+
+        } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+            for (int j = 0; j < theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - 5).getDoors().size(); j++) {
+                this.myDoorsList.getItems().add("Door " + j);
+            }
         }
 
         this.myDoorsList.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if(myDoorsList.getSelectionModel().getSelectedIndex() != -1) {
-                    System.out.println(myDoorsList.getValue());
-                    System.out.println(theController.getDoorDescription(myListView.getSelectionModel().getSelectedIndex(), myDoorsList.getSelectionModel().getSelectedIndex()));
+
+                    System.out.println("retrieving from listView Index " + myListView.getSelectionModel().getSelectedIndex());
+
+                    if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+                        System.out.println(myDoorsList.getValue());
+                        System.out.println(theController.getChamberDoorDescription(myListView.getSelectionModel().getSelectedIndex(), myDoorsList.getSelectionModel().getSelectedIndex()));
+
+                    } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+                        System.out.println(myDoorsList.getValue());
+                        System.out.println(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - 5, myDoorsList.getSelectionModel().getSelectedIndex()));
+                    }
                 }
             }
         });
