@@ -20,7 +20,7 @@ public final class Algorithm {
      * Main algorithm.
      *
      */
-    public void performAlgorithm(int count) {
+    public void performAlgorithm(final int count) {
         myLevel.clearLevel();
 
         StringBuilder finalDescription = new StringBuilder();

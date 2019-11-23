@@ -165,7 +165,7 @@ public class Passage extends Space {
         for (int i = 0; i < this.thePassage.size(); i++) {
             this.myDescription.append(this.thePassage.get(i).getDescription()).append(".\n");
 
-            this.myDescription.append(makeDoorDescription(i));
+            this.myDescription.append(makeDoorDescription(i)).append("\n");
 
             if (this.thePassage.get(i).getMonster() != null) {
                 this.myDescription.append(this.thePassage.get(i).getMonster().getDescription()).append(".\n");
@@ -179,6 +179,8 @@ public class Passage extends Space {
         StringBuilder s = new StringBuilder();
         if (this.thePassage.get(i).getDoor() != null) {
             s.append("Door is ").append(this.thePassage.get(i).getDoor().getDescription());
+        } else {
+            s.append(("No Door"));
         }
         return s.toString();
     }

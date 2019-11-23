@@ -23,6 +23,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import jmorea.Passage;
 
 import java.awt.event.ActionListener;
@@ -205,9 +206,7 @@ public class dungeonGui<toReturn> extends Application {
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
             for (int j = 0; j < theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - 5).getDoors().size(); j++) {
-                if(theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - 5).makeDoorDescription(j) != null) {
-                    this.myDoorsList.getItems().add("Door " + j);
-                }
+                this.myDoorsList.getItems().add("Door " + j);
             }
         }
 
@@ -216,16 +215,26 @@ public class dungeonGui<toReturn> extends Application {
             public void handle(ActionEvent actionEvent) {
                 if(myDoorsList.getSelectionModel().getSelectedIndex() != -1) {
 
+                    Alert myDoorInfoAlert = new Alert(Alert.AlertType.INFORMATION);
+                    myDoorInfoAlert.setTitle("Door Info");
+                    myDoorInfoAlert.setHeaderText(null);
+                    //myDoorInfoAlert.setContentText("hello this is a dialog box");
+
+
                     System.out.println("retrieving from listView Index " + myListView.getSelectionModel().getSelectedIndex());
 
                     if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
                         System.out.println(myDoorsList.getValue());
                         System.out.println(theController.getChamberDoorDescription(myListView.getSelectionModel().getSelectedIndex(), myDoorsList.getSelectionModel().getSelectedIndex()));
+                        myDoorInfoAlert.setContentText(theController.getChamberDoorDescription(myListView.getSelectionModel().getSelectedIndex(), myDoorsList.getSelectionModel().getSelectedIndex()));
 
                     } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
                         System.out.println(myDoorsList.getValue());
                         System.out.println(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - 5, myDoorsList.getSelectionModel().getSelectedIndex()));
+                        myDoorInfoAlert.setContentText(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - 5, myDoorsList.getSelectionModel().getSelectedIndex()));
                     }
+
+                    myDoorInfoAlert.showAndWait();
                 }
             }
         });
