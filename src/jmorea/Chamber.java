@@ -142,88 +142,112 @@ public class Chamber extends Space {
     }
 
     /**
-     * Creates a description for the entire chameber.
+     * Creates a description for the entire chamber.
      */
     private void makeChamberDescription() {
         this.myDescription = new StringBuilder();
 
-        this.makeChamberShapeDescription();
-        this.makeChamberMonstersDescription();
-        this.makeChamberTreasureDescription();
-        this.makeChamberExitsAndDoorsDescription();
+        this.myDescription.append(makeChamberShapeDescription());
+        this.myDescription.append(makeChamberMonstersDescription());
+        this.myDescription.append(makeChamberTreasureDescription());
+        //this.myDescription.append(makeChamberExitsAndDoorsDescription());
     }
 
     /**
      *  Creates a description for the shape.
      */
-    private void makeChamberShapeDescription() {
+    private String makeChamberShapeDescription() {
+        StringBuilder s = new StringBuilder();
+
         int area,length, width;
-        this.myDescription.append("Shape:\n");
-        this.myDescription.append("\tThe chamber is ").append(this.myShape.getShape()).append(".\n");
+        s.append("Shape:\n");
+        s.append("\tThe chamber is ").append(this.myShape.getShape()).append(".\n");
         try {
             length = myShape.getLength();
             width = myShape.getWidth();
-            this.myDescription.append("\tThe chamber's length is ").append(length)
+            s.append("\tThe chamber's length is ").append(length)
                     .append(" and its width is ").append(width).append(".\n");
         } catch (UnusualShapeException e) {
             area = myShape.getArea();
-            this.myDescription.append("\tThe chamber's area is ").append(area).append(".\n");
+            s.append("\tThe chamber's area is ").append(area).append(".\n");
         }
+
+        return s.toString();
     }
 
     /**
      * Creates a description for the monsters.
      */
-    private void makeChamberMonstersDescription() {
+    private String makeChamberMonstersDescription() {
+        StringBuilder s = new StringBuilder();
+
         if (myMonsters.size() > 0) {
-            this.myDescription.append("\nMonsters:\n");
+            s.append("\nMonsters:\n");
             for (Monster myMonster : myMonsters) {
-                this.myDescription.append("\t").append(myMonster.getDescription());
+                s.append("\t").append(myMonster.getDescription());
             }
-            this.myDescription.append(".\n");
+            s.append(".\n");
         } else {
-            this.myDescription.append("\nNo monsters in this chamber.\n");
+            s.append("\nNo monsters in this chamber.\n");
         }
+
+        return s.toString();
     }
 
     /**
      * Creates a description for the Treasure.
      */
-    private void makeChamberTreasureDescription() {
+    private String makeChamberTreasureDescription() {
+        StringBuilder s = new StringBuilder();
+
         if (myTreasure.size() > 0) {
-            this.myDescription.append("\nTreasure:\n");
+            s.append("\nTreasure:\n");
             for (Treasure treasure : myTreasure) {
-                this.myDescription.append("\t").append(treasure.getDescription());
+                s.append("\t").append(treasure.getDescription());
                 try {
-                    this.myDescription.append(" is protected by ").append(treasure.getProtection());
+                    s.append(" is protected by ").append(treasure.getProtection());
                 } catch (NotProtectedException e) {
-                    this.myDescription.append(" is left unprotected");
+                    s.append(" is left unprotected");
                 }
             }
-            this.myDescription.append(".\n");
+            s.append(".\n");
         } else {
-            this.myDescription.append("\nNo treasure in this chamber.\n");
+            s.append("\nNo treasure in this chamber.\n");
         }
+
+        return s.toString();
     }
 
     /**
      * Creates a description for the exits/doors.
      */
-    private void makeChamberExitsAndDoorsDescription() {
-        if (myShape.getNumExits() > 0) {
-            this.myDescription.append("\nExits:\n");
-            for (int k = 0; k < this.myDoors.size(); k++) {
-                this.myDescription.append("Door #").append(k).append(":\n");
-                this.myDescription.append("\tDoor is ").append(myDoors.get(k).getDescription()).append(".\n");
-                this.myDescription.append("\tDoor is on ").append(myDoors.get(k).getExit().getLocation()).append(" ").append(myDoors.get(k).getExit().getDirection()).append(".\n"); //Be careful since this executes outside the door class
+    private String makeChamberExitsAndDoorsDescription() {
+        StringBuilder s = new StringBuilder();
 
-                if (myDoors.get(k).isTrapped()) {
-                    this.myDescription.append("\tDoor Trap:").append(this.myDoors.get(k).getTrapDescription()).append(".\n");
-                }
+        if (myShape.getNumExits() > 0) {
+            s.append("\nExits:\n");
+            for (int k = 0; k < this.myDoors.size(); k++) {
+                s.append("Door #").append(k).append(":\n");
+                s.append(makeDoorDescription(k));
             }
         } else {
-            this.myDescription.append("\nNo doors in this chamber. This is a dead end.\n");
+            s.append("\nNo doors in this chamber. This is a dead end.\n");
         }
+
+        return s.toString();
+    }
+
+    public String makeDoorDescription(int i) {
+        StringBuilder s = new StringBuilder();
+
+        s.append("\tDoor is ").append(myDoors.get(i).getDescription()).append(".\n");
+        s.append("\tDoor is on ").append(myDoors.get(i).getExit().getLocation()).append(" ").append(myDoors.get(i).getExit().getDirection());
+
+        if (myDoors.get(i).isTrapped()) {
+            s.append("\tDoor Trap:").append(this.myDoors.get(i).getTrapDescription());
+        }
+
+        return s.toString();
     }
 
 

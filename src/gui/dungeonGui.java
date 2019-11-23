@@ -52,7 +52,7 @@ public class dungeonGui<toReturn> extends Application {
 
         this.root = setUpRoot();
 
-        Scene myScene = new Scene(root, 700, 720);
+        Scene myScene = new Scene(root, 700, 400);
         setApplicationIcon();
 
         primaryStage.setScene(myScene);
@@ -110,13 +110,14 @@ public class dungeonGui<toReturn> extends Application {
         myListView.setPrefHeight(300);
 
         for(int i = 0; i < theController.getChambersList().size(); i++) {
-            myListView.getItems().add("Chamber " + (i+1));
+            myListView.getItems().add("Chamber " + i);
         }
 
         myListView.setOnMouseClicked((MouseEvent event)->{
-            System.out.println("clicked on " + myListView.getSelectionModel().getSelectedItem());
-            this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
-            updateDoorList();
+                //System.out.println("clicked on " + myListView.getSelectionModel().getSelectedItem());
+                //System.out.println("index requested " + myListView.getSelectionModel().getSelectedIndex());
+                this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
+                updateDoorList();
         });
 
         return myListView;
@@ -176,34 +177,30 @@ public class dungeonGui<toReturn> extends Application {
         this.myDoorsList = new ComboBox();
 
         this.myDoorsList.setPrefWidth(150);
-        this.myDoorsList.setVisibleRowCount(6);
+        this.myDoorsList.setVisibleRowCount(10);
         //this.myDoorsList.setValue("List of Doors");
 
     }
 
     private void updateDoorList() {
+        //this.myDoorsList.getSelectionModel().clearSelection();
         this.myDoorsList.getItems().clear();
-        //this.myDoorsList.setValue("List of Doors");
+        //System.out.println(this.myDoorsList.getSelectionModel().getSelectedIndex());
 
-        System.out.println(myListView.getSelectionModel().getSelectedItem());
-        if (myListView.getSelectionModel().getSelectedItem() != null) {
-            for (int i = 0; i < theController.getChambersList().get(myListView.getSelectionModel().getSelectedIndex()).getDoors().size(); i++) {
-                this.myDoorsList.getItems().add("Door " + i);
-            }
+        for (int i = 0; i < theController.getChambersList().get(myListView.getSelectionModel().getSelectedIndex()).getDoors().size(); i++) {
+            this.myDoorsList.getItems().add("Door " + i);
         }
 
         this.myDoorsList.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println(myDoorsList.getValue());
+                if(myDoorsList.getSelectionModel().getSelectedIndex() != -1) {
+                    System.out.println(myDoorsList.getValue());
+                    System.out.println(theController.getDoorDescription(myListView.getSelectionModel().getSelectedIndex(), myDoorsList.getSelectionModel().getSelectedIndex()));
+                }
             }
         });
 
-        //TODO action should only occur on dropDown items. Nulls?
-        /*this.myDoorsList.getItems().add((options, oldValue, newValue) -> {
-                    System.out.println(newValue);
-                }
-        );*/
     }
 
     private Node setupSpaceView() {
