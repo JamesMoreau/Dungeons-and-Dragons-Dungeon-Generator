@@ -53,7 +53,7 @@ public class dungeonGui<toReturn> extends Application {
 
         this.root = setUpRoot();
 
-        Scene myScene = new Scene(root, 700, 400);
+        Scene myScene = new Scene(root, 700, 500);
         setApplicationIcon();
 
         primaryStage.setScene(myScene);
@@ -119,8 +119,6 @@ public class dungeonGui<toReturn> extends Application {
         }
 
         myListView.setOnMouseClicked((MouseEvent event)->{
-                //System.out.println("clicked on " + myListView.getSelectionModel().getSelectedItem());
-                //System.out.println("index requested " + myListView.getSelectionModel().getSelectedIndex());
                 if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
                     System.out.println("getting chamber from chamberList index " + (myListView.getSelectionModel().getSelectedIndex()));
                     this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
@@ -175,7 +173,7 @@ public class dungeonGui<toReturn> extends Application {
         this.textArea = new TextArea();
 
         //textArea.setPrefWidth(250);
-        textArea.setPrefHeight(400);
+        textArea.setPrefHeight(200);
         textArea.setWrapText(true);
         textArea.editableProperty().setValue(false);
         textArea.setPadding(new Insets(5,20,5,20));
@@ -207,7 +205,9 @@ public class dungeonGui<toReturn> extends Application {
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
             for (int j = 0; j < theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - 5).getDoors().size(); j++) {
-                this.myDoorsList.getItems().add("Door " + j);
+                if(theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - 5).makeDoorDescription(j) != null) {
+                    this.myDoorsList.getItems().add("Door " + j);
+                }
             }
         }
 

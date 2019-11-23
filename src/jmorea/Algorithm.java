@@ -72,7 +72,7 @@ public final class Algorithm {
         System.out.println("\nMaking boring Passages");
         for (int i = 0; i < count; i++) {
             tempPassage = new Passage();
-            tempPassage.makeBoring();
+            //tempPassage.makeBoring();
             myLevel.addPassage(tempPassage);
         }
 
