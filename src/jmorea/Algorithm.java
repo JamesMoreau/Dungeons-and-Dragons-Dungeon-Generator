@@ -1,24 +1,27 @@
 package jmorea;
 
 //TODO: getDoors from a chamber and check if that ArrayList.contains(the door) for any door you are trying to get a target for.
- /**
+
+/**
  * Dungeon generator class manages algorithm.
  */
-public final class Algorithm implements java.io.Serializable{
-
-     private Level myLevel;
-
+public final class Algorithm implements java.io.Serializable {
 
     /**
-    * sets up algorithm variables.
-    */
+     * The level containing the chambers and passages.
+     */
+    private Level myLevel;
+
+    /**
+     * sets up algorithm variables.
+     */
     public Algorithm() {
         myLevel = new Level();
     }
 
     /**
      * Main algorithm.
-     *
+     * @param count the number of chamber to build
      */
     public void performAlgorithm(final int count) {
         myLevel.clearLevel();
@@ -89,9 +92,10 @@ public final class Algorithm implements java.io.Serializable{
         System.out.println(finalDescription.toString());
     }
 
-     /**
-      * Returns the level created by the algorithm.
-      */
+    /**
+     * Returns the level created by the algorithm.
+     * @return the level
+     */
     public Level getLevel() {
         return this.myLevel;
     }
