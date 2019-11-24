@@ -80,6 +80,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * returns the arraylist of doors associated with the chamber.
+     *
      * @return the arraylist of doors
      */
     @Override
@@ -89,6 +90,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * Adds a monster to the arraylist of monster.
+     *
      * @param theMonster the monster to be added
      */
     public void addMonster(Monster theMonster) {
@@ -98,6 +100,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * returns the arraylist of monsters associated with the chamber.
+     *
      * @return the arraylist of monsters
      */
     public ArrayList<Monster> getMonsters() {
@@ -107,6 +110,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * Adds a treasure to the arraylist of treasure.
+     *
      * @param theTreasure the treasure to be added
      */
     public void addTreasure(Treasure theTreasure) {
@@ -117,6 +121,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * returns the arraylist of treasure associated with the chamber.
+     *
      * @return the arraylistof treasure
      */
     public ArrayList<Treasure> getTreasureList() {
@@ -157,12 +162,16 @@ public class Chamber extends Space implements java.io.Serializable {
     }
 
     /**
-     *  Creates a description for the shape.
+     * Creates a description for the shape.
+     * @return the string description
      */
     private String makeChamberShapeDescription() {
         StringBuilder s = new StringBuilder();
 
-        int area,length, width;
+        int area;
+        int length;
+        int width;
+
         s.append("Shape:\n");
         s.append("\tThe chamber is ").append(this.myShape.getShape()).append(".\n");
         try {
@@ -180,6 +189,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * Creates a description for the monsters.
+     * @return the string description
      */
     private String makeChamberMonstersDescription() {
         StringBuilder s = new StringBuilder();
@@ -199,6 +209,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * Creates a description for the Treasure.
+     * @return the string description
      */
     private String makeChamberTreasureDescription() {
         StringBuilder s = new StringBuilder();
@@ -223,6 +234,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * Creates a description for the exits/doors.
+     * @return the string description
      */
     private String makeChamberExitsAndDoorsDescription() {
         StringBuilder s = new StringBuilder();
@@ -242,6 +254,8 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * Creates a description for an exits/door.
+     * @param i the index of the door in door list.
+     * @return the string door description.
      */
     public String makeDoorDescription(int i) {
         StringBuilder s = new StringBuilder();
@@ -259,6 +273,7 @@ public class Chamber extends Space implements java.io.Serializable {
 
     /**
      * Adds a door to the arraylist of doors.
+     *
      * @param newDoor the door to be added
      */
     @Override

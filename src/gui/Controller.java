@@ -66,9 +66,18 @@ public class Controller {
         return myAlgo.getLevel().getChambers().get(i).getTreasureList();
     }
 
+    public ArrayList<Treasure> getPassageTreasureList(int i) {
+        return myAlgo.getLevel().getPassages().get(i).getTreasureList();
+    }
+
     public void addChamberTreasure(int i) {
         myAlgo.getLevel().getChambers().get(i).addTreasure(new Treasure());
     }
+
+    public void addPassageTreasure(int i) {
+        myAlgo.getLevel().getPassages().get(i).addTreasure(new Treasure());
+    }
+
 
 
 }

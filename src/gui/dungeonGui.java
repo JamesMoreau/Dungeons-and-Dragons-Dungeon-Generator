@@ -45,6 +45,7 @@ public class dungeonGui<toReturn> extends Application {
     private TextArea textArea;
     private ListView myListView;
     private ComboBox myDoorsList;
+    private final int LISTVIEW_OFFSET = 5;
 
     @Override
     public void start(Stage assignedStage) {
@@ -126,7 +127,7 @@ public class dungeonGui<toReturn> extends Application {
                     updateBottomTextChamber();
 
                 } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
-                    System.out.println("getting passage from passageList index " + (myListView.getSelectionModel().getSelectedIndex() - 5));
+                    System.out.println("getting passage from passageList index " + (myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET));
                     updateBottomTextPassage();
 
                 } else {
@@ -143,7 +144,7 @@ public class dungeonGui<toReturn> extends Application {
     }
 
     public void updateBottomTextPassage() {
-        this.textArea.setText(theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - 5));
+        this.textArea.setText(theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET));
     }
 
     private Node setupLeftVBox() {
@@ -177,7 +178,6 @@ public class dungeonGui<toReturn> extends Application {
 
                 editAlert.getButtonTypes().addAll(rM, aM, rT, aT);
 
-
                 if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
 
                     editAlert.setContentText("Monster Count: " + theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() +
@@ -187,7 +187,7 @@ public class dungeonGui<toReturn> extends Application {
 
                 } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
 
-                    editAlert.setContentText("editing passages not implement yet");
+                    editAlert.setContentText("Monster Count: 0\n" + "Treasure Count: " + theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).size());
 
                     updateBottomTextPassage();
 
@@ -264,7 +264,7 @@ public class dungeonGui<toReturn> extends Application {
             }
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
-            for (int j = 0; j < theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - 5).getDoors().size(); j++) {
+            for (int j = 0; j < theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).getDoors().size(); j++) {
                 this.myDoorsList.getItems().add("Door " + j);
             }
         }
@@ -288,8 +288,8 @@ public class dungeonGui<toReturn> extends Application {
 
                     } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
                         System.out.println(myDoorsList.getValue());
-                        System.out.println(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - 5, myDoorsList.getSelectionModel().getSelectedIndex()));
-                        myDoorInfoAlert.setContentText(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - 5, myDoorsList.getSelectionModel().getSelectedIndex()));
+                        System.out.println(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET, myDoorsList.getSelectionModel().getSelectedIndex()));
+                        myDoorInfoAlert.setContentText(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET, myDoorsList.getSelectionModel().getSelectedIndex()));
                     }
 
                     myDoorInfoAlert.showAndWait();
@@ -346,11 +346,7 @@ public class dungeonGui<toReturn> extends Application {
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
 
-            if (false) {
-
-            } else {
-                System.out.println("Could not add monster");
-            }
+            System.out.println("adding monster to passages not implemented yet.");
 
         } else {
             System.out.println("Bad input");
@@ -369,13 +365,17 @@ public class dungeonGui<toReturn> extends Application {
                 this.updateBottomTextChamber();
 
             } else {
-                System.out.println("Could not remove chamber monster");
+                System.out.println("Could not remove chamber treasure");
             }
 
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
 
-            if (false) {
+            if (theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).size() > 0) {
+
+                theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).remove(theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).size() - 1);
+                System.out.println("Removed a treasure");
+                this.updateBottomTextPassage();
 
             } else {
                 System.out.println("Could not remove passage monster");
@@ -395,11 +395,9 @@ public class dungeonGui<toReturn> extends Application {
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
 
-            if (false) {
-
-            } else {
-                System.out.println("Could not add monster");
-            }
+            theController.addPassageTreasure(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET);
+            System.out.println("Added treasure");
+            this.updateBottomTextPassage();
 
         } else {
             System.out.println("Bad input");
