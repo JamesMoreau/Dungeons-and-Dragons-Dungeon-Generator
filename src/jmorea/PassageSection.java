@@ -9,7 +9,7 @@ import dnd.die.Percentile;
 /**
 *  PassageSection class represents an individual unit of which the Passage is composed.
 */
-public class PassageSection {
+public class PassageSection implements java.io.Serializable {
 
     /**
      * Represents the monster in this section, if there is one.

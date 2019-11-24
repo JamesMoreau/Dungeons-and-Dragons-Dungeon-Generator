@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Space class represents either a Chamber or a Passage.
  */
-public abstract class Space {
+public abstract class Space implements java.io.Serializable {
 
     /**
      * Returns a string describing the space.

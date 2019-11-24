@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Passage class represents an individual passage in the dungeon.
  */
-public class Passage extends Space {
+public class Passage extends Space implements java.io.Serializable {
     //these instance variables are suggestions only
     //you can change them if you wish.
 

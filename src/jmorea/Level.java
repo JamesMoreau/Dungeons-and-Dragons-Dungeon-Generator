@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Level class manages the passages and chambers for this dungeon.
  */
-public class Level {
+public class Level implements java.io.Serializable {
 
     /**
      * Arraylist of chambers in this dungeon.

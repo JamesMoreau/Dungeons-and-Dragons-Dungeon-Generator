@@ -4,7 +4,7 @@ package jmorea;
  /**
  * Dungeon generator class manages algorithm.
  */
-public final class Algorithm {
+public final class Algorithm implements java.io.Serializable{
 
      private Level myLevel;
 

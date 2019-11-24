@@ -11,7 +11,7 @@ import dnd.die.D6;
  *
  * Door class represent an individual door that attaches two spaces.
  */
-public class Door {
+public class Door implements java.io.Serializable {
 
     /**
      * Trap state.

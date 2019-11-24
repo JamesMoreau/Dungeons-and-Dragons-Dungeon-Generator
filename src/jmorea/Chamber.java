@@ -9,12 +9,14 @@ import dnd.models.Monster;
 import dnd.models.Treasure;
 import dnd.die.D20;
 import dnd.die.Percentile;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Chamber class represents an individual chamber for the dungeon.
  */
-public class Chamber extends Space {
+public class Chamber extends Space implements java.io.Serializable {
     /**
      * Chamber contents.
      */
