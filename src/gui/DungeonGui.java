@@ -1,52 +1,80 @@
 package gui;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Label;
+
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import jmorea.Passage;
 
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 
+public class DungeonGui<toReturn> extends Application {
 
-public class dungeonGui<toReturn> extends Application {
-    /* Even if it is a GUI it is useful to have instance variables
-    so that you can break the processing up into smaller methods that have
-    one responsibility.
+    /**
+     * the dungeon generator controller.
      */
     private Controller theController;
-    private BorderPane root;  //the root element of this GUI
-    private Stage primaryStage;  //The stage that is passed in on initialization
-    private TextArea textArea;
-    private ListView myListView;
-    private ComboBox myDoorsList;
-    private final int LISTVIEW_OFFSET = 5;
 
+    /**
+     * the root element of this gui.
+     */
+    private BorderPane root;
+
+    /**
+     * the stage used in the root.
+     */
+    private Stage primaryStage;
+
+    /**
+     * the bottom text area.
+     */
+    private TextArea textArea;
+
+    /**
+     * the list view of passages/chambers.
+     */
+    private ListView myListView;
+
+    /**
+     * the combo box containing the doors.
+     */
+    private ComboBox myDoorsList;
+
+    /**
+     * the offset for the list view (used when accessing passages).
+     */
+    private final int listViewOffset = 5;
+
+
+    /**
+     * starts the application.
+     * @param assignedStage the JavaFX stage to be used.
+     */
     @Override
     public void start(Stage assignedStage) {
         this.theController = new Controller(this);
@@ -63,24 +91,11 @@ public class dungeonGui<toReturn> extends Application {
         primaryStage.show();
     }
 
-
-    /* an example of a popup area that can be set to nearly any
-    type of node
-     */
-    private Popup createPopUp(int x, int y, String text) {
-        Popup popup = new Popup();
-        popup.setX(x);
-        popup.setY(y);
-        TextArea textA = new TextArea(text);
-        popup.getContent().addAll(textA);
-        textA.setStyle(" -fx-background-color: white;");
-        textA.setMinWidth(80);
-        textA.setMinHeight(50);
-        return popup;
-    }
-
-    /*generic button creation method ensure that all buttons will have a
-    similar style and means that the style only need to be in one place
+    /**
+     * creates a button with basic style.
+     * @param text the text inside the button
+     * @param format the format of the button.
+     * @return the button
      */
     private Button createButton(String text, String format) {
         Button btn = new Button();
@@ -89,10 +104,18 @@ public class dungeonGui<toReturn> extends Application {
         return btn;
     }
 
+    /**
+     * sets the custom application icon.
+     */
     private void setApplicationIcon() {
         this.primaryStage.getIcons().add(new Image("res/my_Ghidra_application_icon.png"));
     }
 
+
+    /**
+     * sets up the root for the generator's scene.
+     * @return the Border Pane
+     */
     private BorderPane setUpRoot() {
         BorderPane rootNode = new BorderPane();
 
@@ -107,46 +130,63 @@ public class dungeonGui<toReturn> extends Application {
         return rootNode;
     }
 
+
+    /**
+     * creates the list view for spaces.
+     * @return the list view
+     */
     private Node createSpaceListView() {
         this.myListView = new ListView();
 
         myListView.setPrefWidth(100);
         myListView.setPrefHeight(300);
 
-        for(int i = 0; i < theController.getChambersList().size(); i++) {
+        for (int i = 0; i < theController.getChambersList().size(); i++) {
             myListView.getItems().add("Chamber " + i);
         }
 
-        for(int j = 0; j < theController.getPassageList().size(); j++) {
+        for (int j = 0; j < theController.getPassageList().size(); j++) {
             myListView.getItems().add(("Passage " + j));
         }
 
-        myListView.setOnMouseClicked((MouseEvent event)->{
-                if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
-                    System.out.println("getting chamber from chamberList index " + (myListView.getSelectionModel().getSelectedIndex()));
-                    updateBottomTextChamber();
+        myListView.setOnMouseClicked((MouseEvent event) -> {
+            if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+                System.out.println("getting chamber from chamberList index " + (myListView.getSelectionModel().getSelectedIndex()));
+                updateBottomTextChamber();
 
-                } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
-                    System.out.println("getting passage from passageList index " + (myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET));
-                    updateBottomTextPassage();
+            } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+                System.out.println("getting passage from passageList index " + (myListView.getSelectionModel().getSelectedIndex() - listViewOffset));
+                updateBottomTextPassage();
 
-                } else {
-                    System.out.println("Bad selection.");
-                }
-                updateDoorList();
+            } else {
+                System.out.println("Bad selection.");
+            }
+            updateDoorList();
         });
 
         return myListView;
     }
 
+    /**
+     * updates the bottom text with new info based on a chamber.
+     */
     public void updateBottomTextChamber() {
         this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
     }
 
+
+    /**
+     * updates the bottom text box with new info based on a passage.
+     */
     public void updateBottomTextPassage() {
-        this.textArea.setText(theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET));
+        this.textArea.setText(theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - listViewOffset));
     }
 
+
+    /**
+     * sets up the JavaFX vbox containing the listView.
+     * @return the vbox
+     */
     private Node setupLeftVBox() {
         Label myLbl = new Label("Chamber/Passage Selection");
 
@@ -156,6 +196,10 @@ public class dungeonGui<toReturn> extends Application {
         return vBox;
     }
 
+    /**
+     * creates the edit button for spaces.
+     * @return the edit button
+     */
     private Node createEditButton() {
         Button editButton = createButton("Edit", "-fx-background-color: #FFFFFF; ");
         editButton.setPrefWidth(150);
@@ -178,16 +222,16 @@ public class dungeonGui<toReturn> extends Application {
 
                 editAlert.getButtonTypes().addAll(rM, aM, rT, aT);
 
-                if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+                if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
 
-                    editAlert.setContentText("Monster Count: " + theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() +
-                            "\n\n" + "Treasure Count: " + theController.getChamberTreasureList(this.myListView.getSelectionModel().getSelectedIndex()).size() );
+                    editAlert.setContentText("Monster Count: " + theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size()
+                            + "\n\n" + "Treasure Count: " + theController.getChamberTreasureList(this.myListView.getSelectionModel().getSelectedIndex()).size());
 
                     updateBottomTextChamber();
 
                 } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
 
-                    editAlert.setContentText("Monster Count: 0\n" + "Treasure Count: " + theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).size());
+                    editAlert.setContentText("Monster Count: 0\n" + "Treasure Count: " + theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - listViewOffset).size());
 
                     updateBottomTextPassage();
 
@@ -217,7 +261,10 @@ public class dungeonGui<toReturn> extends Application {
         return editButton;
     }
 
-
+    /**
+     * sets up the JavaFX vbox containing the door list comboBox.
+     * @return the vbox
+     */
     private Node setupRightVBox() {
 
         Label myLbl = new Label("Select Door");
@@ -229,6 +276,11 @@ public class dungeonGui<toReturn> extends Application {
         return vBox;
     }
 
+
+    /**
+     * sets up the bottom space description box.
+     * @return the text area
+     */
     private Node setupBottomTextBox() {
         this.textArea = new TextArea();
 
@@ -236,16 +288,19 @@ public class dungeonGui<toReturn> extends Application {
         textArea.setPrefHeight(200);
         textArea.setWrapText(true);
         textArea.editableProperty().setValue(false);
-        textArea.setPadding(new Insets(5,20,5,20));
+        textArea.setPadding(new Insets(5, 20, 5, 20));
         textArea.contextMenuProperty().unbind();
         textArea.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
 
 
         textArea.setText("N/A\n");
 
-        return  textArea;
+        return textArea;
     }
 
+    /**
+     * sets up the JavaFX door list.
+     */
     private void setupDoorList() {
         this.myDoorsList = new ComboBox();
 
@@ -255,16 +310,19 @@ public class dungeonGui<toReturn> extends Application {
 
     }
 
+    /**
+     * updates the doors list based on what is selected in list view.
+     */
     private void updateDoorList() {
         this.myDoorsList.getItems().clear();
 
-        if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+        if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
             for (int i = 0; i < theController.getChambersList().get(myListView.getSelectionModel().getSelectedIndex()).getDoors().size(); i++) {
                 this.myDoorsList.getItems().add("Door " + i);
             }
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
-            for (int j = 0; j < theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).getDoors().size(); j++) {
+            for (int j = 0; j < theController.getPassageList().get(myListView.getSelectionModel().getSelectedIndex() - listViewOffset).getDoors().size(); j++) {
                 this.myDoorsList.getItems().add("Door " + j);
             }
         }
@@ -272,7 +330,7 @@ public class dungeonGui<toReturn> extends Application {
         this.myDoorsList.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(myDoorsList.getSelectionModel().getSelectedIndex() != -1) {
+                if (myDoorsList.getSelectionModel().getSelectedIndex() != -1) {
 
                     Alert myDoorInfoAlert = new Alert(Alert.AlertType.INFORMATION);
                     myDoorInfoAlert.setTitle("Door Info");
@@ -288,8 +346,8 @@ public class dungeonGui<toReturn> extends Application {
 
                     } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
                         System.out.println(myDoorsList.getValue());
-                        System.out.println(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET, myDoorsList.getSelectionModel().getSelectedIndex()));
-                        myDoorInfoAlert.setContentText(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET, myDoorsList.getSelectionModel().getSelectedIndex()));
+                        System.out.println(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - listViewOffset, myDoorsList.getSelectionModel().getSelectedIndex()));
+                        myDoorInfoAlert.setContentText(theController.getPassageDoorDescription(myListView.getSelectionModel().getSelectedIndex() - listViewOffset, myDoorsList.getSelectionModel().getSelectedIndex()));
                     }
 
                     myDoorInfoAlert.showAndWait();
@@ -299,6 +357,11 @@ public class dungeonGui<toReturn> extends Application {
 
     }
 
+
+    /**
+     * sets up the dungeon/passage visual.
+     * @return the grid-pane visual
+     */
     private Node setupSpaceView() {
         GridPane myRoom = new ChamberView(5, 4);
         myRoom.setPadding(new Insets(20, 10, 10, 10));
@@ -308,37 +371,43 @@ public class dungeonGui<toReturn> extends Application {
         return myRoom;
     }
 
+    /**
+     * reacts to monster remove button.
+     */
     public void reactToMonsterRemoveButton() {
 
-            if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+        if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
 
-                if (theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() > 0) {
+            if (theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() > 0) {
 
-                    theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).remove(theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() - 1);
-                    System.out.println("Removed a monster");
-                    this.updateBottomTextChamber();
-
-                } else {
-                    System.out.println("Could not remove chamber monster");
-                }
-
-
-            } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
-
-                if (false) {
-
-                } else {
-                    System.out.println("Could not remove passage monster");
-                }
+                theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).remove(theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() - 1);
+                System.out.println("Removed a monster");
+                this.updateBottomTextChamber();
 
             } else {
-                System.out.println("Bad input");
+                System.out.println("Could not remove chamber monster");
             }
+
+
+        } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+
+            if (false) {
+                System.out.println("hi");
+            } else {
+                System.out.println("Could not remove passage monster");
+            }
+
+        } else {
+            System.out.println("Bad input");
+        }
     }
 
+    /**
+     * reacts to monster add button.
+     */
     private void reactToMonsterAddButton() {
 
-        if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+        if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
 
             theController.addChamberMonster(this.myListView.getSelectionModel().getSelectedIndex());
             System.out.println("Added a monster");
@@ -354,9 +423,12 @@ public class dungeonGui<toReturn> extends Application {
 
     }
 
+    /**
+     * reacts to treasure remove button.
+     */
     private void reactToTreasureRemoveButton() {
 
-        if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+        if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
 
             if (theController.getChamberTreasureList(this.myListView.getSelectionModel().getSelectedIndex()).size() > 0) {
 
@@ -371,9 +443,9 @@ public class dungeonGui<toReturn> extends Application {
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
 
-            if (theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).size() > 0) {
+            if (theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - listViewOffset).size() > 0) {
 
-                theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).remove(theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET).size() - 1);
+                theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - listViewOffset).remove(theController.getPassageTreasureList(this.myListView.getSelectionModel().getSelectedIndex() - listViewOffset).size() - 1);
                 System.out.println("Removed a treasure");
                 this.updateBottomTextPassage();
 
@@ -386,8 +458,11 @@ public class dungeonGui<toReturn> extends Application {
         }
     }
 
+    /**
+     * reacts to treasure add button.
+     */
     private void reactToTreasureAddButton() {
-        if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+        if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
 
             theController.addChamberTreasure(this.myListView.getSelectionModel().getSelectedIndex());
             System.out.println("Added treasure");
@@ -395,7 +470,7 @@ public class dungeonGui<toReturn> extends Application {
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
 
-            theController.addPassageTreasure(this.myListView.getSelectionModel().getSelectedIndex() - LISTVIEW_OFFSET);
+            theController.addPassageTreasure(this.myListView.getSelectionModel().getSelectedIndex() - listViewOffset);
             System.out.println("Added treasure");
             this.updateBottomTextPassage();
 
@@ -405,6 +480,10 @@ public class dungeonGui<toReturn> extends Application {
 
     }
 
+    /**
+     * launches gui.
+     * @param args n/a
+     */
     public static void main(String[] args) {
         launch(args);
     }

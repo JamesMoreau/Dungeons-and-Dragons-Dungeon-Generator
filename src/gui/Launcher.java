@@ -1,8 +1,22 @@
 package gui;
 
-public class Launcher {
+public final class Launcher {
+
+    /**
+     * Empty constructor.
+     */
+    private Launcher() {
+
+    }
+
+    /**
+     * Main launcher.
+     *
+     * @param args N/A takes in no arguments
+     */
 
     public static void main(String[] args) {
-        dungeonGui.main(args);
+        Launcher myLauncher = new Launcher();
+        DungeonGui.main(args);
     }
 }
