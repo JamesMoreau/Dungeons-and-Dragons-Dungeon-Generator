@@ -161,6 +161,7 @@ public class Passage extends Space {
      */
     private void makeDescription() {
         this.myDescription = new StringBuilder();
+        this.myDescription.append("Passage Description\n").append("==========================\n");
 
         for (int i = 0; i < this.thePassage.size(); i++) {
             this.myDescription.append(this.thePassage.get(i).getDescription()).append(".\n");

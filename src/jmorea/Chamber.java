@@ -89,7 +89,7 @@ public class Chamber extends Space {
      * Adds a monster to the arraylist of monster.
      * @param theMonster the monster to be added
      */
-    void addMonster(Monster theMonster) {
+    public void addMonster(Monster theMonster) {
         theMonster.setType(new Percentile().roll());
         this.myMonsters.add(theMonster);
     }
@@ -98,7 +98,7 @@ public class Chamber extends Space {
      * returns the arraylist of monsters associated with the chamber.
      * @return the arraylist of monsters
      */
-    ArrayList<Monster> getMonsters() {
+    public ArrayList<Monster> getMonsters() {
         return this.myMonsters;
     }
 
@@ -107,7 +107,7 @@ public class Chamber extends Space {
      * Adds a treasure to the arraylist of treasure.
      * @param theTreasure the treasure to be added
      */
-    void addTreasure(Treasure theTreasure) {
+    public void addTreasure(Treasure theTreasure) {
         theTreasure.setContainer(new D20().roll());
         theTreasure.chooseTreasure(new Percentile().roll());
         this.myTreasure.add(theTreasure);
@@ -117,7 +117,7 @@ public class Chamber extends Space {
      * returns the arraylist of treasure associated with the chamber.
      * @return the arraylistof treasure
      */
-    ArrayList<Treasure> getTreasureList() {
+    public ArrayList<Treasure> getTreasureList() {
         return this.myTreasure;
     }
 
@@ -146,6 +146,7 @@ public class Chamber extends Space {
      */
     private void makeChamberDescription() {
         this.myDescription = new StringBuilder();
+        this.myDescription.append("Chamber Description\n").append("==========================\n");
 
         this.myDescription.append(makeChamberShapeDescription());
         this.myDescription.append(makeChamberMonstersDescription());
@@ -237,6 +238,9 @@ public class Chamber extends Space {
         return s.toString();
     }
 
+    /**
+     * Creates a description for an exits/door.
+     */
     public String makeDoorDescription(int i) {
         StringBuilder s = new StringBuilder();
 

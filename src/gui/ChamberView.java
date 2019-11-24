@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 public class ChamberView extends GridPane {
     private String floor;
     private String treasure;
+    private String door;
     private int length;
     private int width;
 
@@ -16,6 +17,7 @@ public class ChamberView extends GridPane {
     public ChamberView(int len, int wid){
         floor = "/res/floor.png";
         treasure = "/res/treasure.png";
+        door = "/res/door.png";
         length = len;
         width = wid; //user these values to decide the size of the view and how many tiles
 
@@ -56,7 +58,7 @@ public class ChamberView extends GridPane {
                 floorFactory(floor),
                 floorFactory(floor),
                 floorFactory(floor),
-                floorFactory(floor),
+                floorFactory(door),
                 floorFactory(floor),
                 floorFactory(floor),
                 floorFactory(floor),

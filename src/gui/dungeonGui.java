@@ -31,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 
 public class dungeonGui<toReturn> extends Application {
@@ -54,7 +55,7 @@ public class dungeonGui<toReturn> extends Application {
 
         this.root = setUpRoot();
 
-        Scene myScene = new Scene(root, 700, 500);
+        Scene myScene = new Scene(root, 650, 500);
         setApplicationIcon();
 
         primaryStage.setScene(myScene);
@@ -108,7 +109,7 @@ public class dungeonGui<toReturn> extends Application {
     private Node createSpaceListView() {
         this.myListView = new ListView();
 
-        myListView.setPrefWidth(125);
+        myListView.setPrefWidth(100);
         myListView.setPrefHeight(300);
 
         for(int i = 0; i < theController.getChambersList().size(); i++) {
@@ -122,11 +123,11 @@ public class dungeonGui<toReturn> extends Application {
         myListView.setOnMouseClicked((MouseEvent event)->{
                 if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
                     System.out.println("getting chamber from chamberList index " + (myListView.getSelectionModel().getSelectedIndex()));
-                    this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
+                    updateBottomTextChamber();
 
                 } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
                     System.out.println("getting passage from passageList index " + (myListView.getSelectionModel().getSelectedIndex() - 5));
-                    this.textArea.setText(theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - 5));
+                    updateBottomTextPassage();
 
                 } else {
                     System.out.println("Bad selection.");
@@ -135,6 +136,14 @@ public class dungeonGui<toReturn> extends Application {
         });
 
         return myListView;
+    }
+
+    public void updateBottomTextChamber() {
+        this.textArea.setText(theController.getNewChamberDescription(myListView.getSelectionModel().getSelectedIndex()));
+    }
+
+    public void updateBottomTextPassage() {
+        this.textArea.setText(theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - 5));
     }
 
     private Node setupLeftVBox() {
@@ -148,12 +157,55 @@ public class dungeonGui<toReturn> extends Application {
 
     private Node createEditButton() {
         Button editButton = createButton("Edit", "-fx-background-color: #FFFFFF; ");
+        editButton.setPrefWidth(150);
 
         editButton.setOnAction((ActionEvent event) -> {
-            theController.reactToEditButton();
-        });
 
-        //editButton.setPadding(new Insets(10,5,5,10));
+            Alert editAlert = new Alert(Alert.AlertType.INFORMATION);
+            editAlert.setTitle("Editor");
+            editAlert.setHeaderText(null);
+
+            ButtonType rM = new ButtonType("Monster (-)");
+            ButtonType aM = new ButtonType("Monster (+)");
+
+            theController.reactToEditButton();
+
+            if (myListView.getSelectionModel().getSelectedIndex() != -1) {
+
+                editAlert.getButtonTypes().addAll(rM, aM);
+
+
+                if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+
+                    editAlert.setContentText("Monster Count: " + theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() +
+                            "\n\n" + "Treasure Count: " + theController.getChamberTreasureList(this.myListView.getSelectionModel().getSelectedIndex()).size() );
+
+                    updateBottomTextChamber();
+
+                } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+
+                    editAlert.setContentText("editing passages not implement yet");
+
+                    updateBottomTextPassage();
+
+                }
+            } else {
+                editAlert.setContentText("No Space Selected!");
+
+            }
+
+            Optional<ButtonType> option = editAlert.showAndWait();
+
+            if (option.get() == null) {
+                System.out.println("No selection!");
+            } else if (option.get() == aM) {
+                this.reactToMonsterAddButton();
+            } else if (option.get() == rM) {
+                this.reactToMonsterRemoveButton();
+            } else {
+                System.out.println("Bad Input");
+            }
+        });
 
         return editButton;
     }
@@ -218,7 +270,6 @@ public class dungeonGui<toReturn> extends Application {
                     Alert myDoorInfoAlert = new Alert(Alert.AlertType.INFORMATION);
                     myDoorInfoAlert.setTitle("Door Info");
                     myDoorInfoAlert.setHeaderText(null);
-                    //myDoorInfoAlert.setContentText("hello this is a dialog box");
 
 
                     System.out.println("retrieving from listView Index " + myListView.getSelectionModel().getSelectedIndex());
@@ -242,12 +293,62 @@ public class dungeonGui<toReturn> extends Application {
     }
 
     private Node setupSpaceView() {
-        GridPane myRoom = new ChamberView(4, 4);
+        GridPane myRoom = new ChamberView(5, 4);
         myRoom.setPadding(new Insets(20, 10, 10, 10));
         myRoom.setAlignment(Pos.TOP_CENTER);
         myRoom.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         return myRoom;
+    }
+
+    public void reactToMonsterRemoveButton() {
+
+            if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+
+                if (theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() > 0) {
+
+                    theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).remove(theController.getChamberMonsters(this.myListView.getSelectionModel().getSelectedIndex()).size() - 1);
+                    System.out.println("Removed a monster");
+                    this.updateBottomTextChamber();
+
+                } else {
+                    System.out.println("Could not remove chamber monster");
+                }
+
+
+            } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+
+                if (false) {
+
+                } else {
+                    System.out.println("Could not remove passage monster");
+                }
+
+            } else {
+                System.out.println("Bad input");
+            }
+    }
+
+    private void reactToMonsterAddButton() {
+
+        if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+
+            theController.addChamberMonster(this.myListView.getSelectionModel().getSelectedIndex());
+            System.out.println("Added a monster");
+            this.updateBottomTextChamber();
+
+        } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+
+            if (false) {
+
+            } else {
+                System.out.println("Could not add monster");
+            }
+
+        } else {
+            System.out.println("Bad input");
+        }
+
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,7 @@
 package gui;
 
+import dnd.models.Monster;
+import dnd.models.Treasure;
 import jmorea.*;
 
 import java.util.ArrayList;
@@ -51,4 +53,22 @@ public class Controller {
     public String getPassageDoorDescription(int passageIndex, int doorIndex) {
         return myAlgo.getLevel().getPassages().get(passageIndex).makeDoorDescription(doorIndex);
     }
+
+    public ArrayList<Monster> getChamberMonsters(int i) {
+        return myAlgo.getLevel().getChambers().get(i).getMonsters();
+    }
+
+    public void addChamberMonster(int i) {
+        myAlgo.getLevel().getChambers().get(i).addMonster(new Monster());
+    }
+
+    public ArrayList<Treasure> getChamberTreasureList(int i) {
+        return myAlgo.getLevel().getChambers().get(i).getTreasureList();
+    }
+
+    public void addChamberTreasure(int i) {
+        myAlgo.getLevel().getChambers().get(i).addTreasure(new Treasure());
+    }
+
+
 }
