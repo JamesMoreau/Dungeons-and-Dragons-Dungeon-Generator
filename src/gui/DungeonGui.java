@@ -29,11 +29,15 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.Optional;
 
 public class DungeonGui<toReturn> extends Application {
+
+    FileChooser fileChooser;
 
     /**
      * the dungeon generator controller.
@@ -79,6 +83,8 @@ public class DungeonGui<toReturn> extends Application {
     public void start(Stage assignedStage) {
         this.theController = new Controller(this);
 
+        this.fileChooser = setupFileChooser();
+
         primaryStage = assignedStage;
         primaryStage.setTitle("Dungeon Generator");
 
@@ -89,6 +95,12 @@ public class DungeonGui<toReturn> extends Application {
 
         primaryStage.setScene(myScene);
         primaryStage.show();
+    }
+
+    private FileChooser setupFileChooser() {
+        FileChooser f = new FileChooser();
+
+        return f;
     }
 
     /**
@@ -190,11 +202,56 @@ public class DungeonGui<toReturn> extends Application {
     private Node setupLeftVBox() {
         Label myLbl = new Label("Chamber/Passage Selection");
 
-        VBox vBox = new VBox(myLbl, createSpaceListView(), createEditButton());
+        VBox vBox = new VBox(myLbl, createSpaceListView(), createEditButton(), createFileChooserOpenButton(), createFileChooserSaveButton());
         vBox.setPadding(new Insets(10, 10, 10, 10));
 
         return vBox;
     }
+
+    private Node createFileChooserOpenButton() {
+        Button b = createButton("Open", "-fx-background-color: #FFFFFF; ");
+        b.setPrefWidth(150);
+
+        b.setOnAction((ActionEvent event) -> {
+            this.fileChooser.setInitialDirectory(new File("Data/"));
+            this.fileChooser.setInitialFileName("myLevel.ser");
+
+            File f = fileChooser.showOpenDialog(primaryStage);
+
+            if(f != null) {
+                System.out.println(f.getName());
+                theController.loadLevel(f);
+            } else {
+                System.out.println("no file selected");
+            }
+        });
+
+        return b;
+    }
+
+    private Node createFileChooserSaveButton() {
+        Button b = createButton("Save","-fx-background-color: #FFFFFF; ");
+        b.setPrefWidth(150);
+
+        b.setOnAction((ActionEvent event) -> {
+            String saveName = "save.ser";
+
+            this.fileChooser.setInitialFileName(saveName);
+
+            File f = fileChooser.showSaveDialog(primaryStage);
+
+            if(f != null) {
+                System.out.println(f.getName());
+                theController.saveLevel(f);
+            } else {
+                System.out.println("no file selected");
+            }
+        });
+
+        return b;
+    }
+
+
 
     /**
      * creates the edit button for spaces.

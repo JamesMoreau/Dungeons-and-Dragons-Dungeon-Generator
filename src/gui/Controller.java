@@ -2,10 +2,18 @@ package gui;
 
 import dnd.models.Monster;
 import dnd.models.Treasure;
+import jmorea.Level;
 import jmorea.Passage;
 import jmorea.Algorithm;
 import jmorea.Chamber;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Controller {
@@ -159,4 +167,41 @@ public class Controller {
         myAlgo.getLevel().getPassages().get(i).addTreasure(new Treasure());
     }
 
+    public void saveLevel(File savedFile) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(savedFile);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+
+            out.writeObject(myAlgo.getLevel());
+
+            out.close();
+            fileOut.close();
+            System.out.println("Serialized Level");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadLevel(File savedFile) {
+        try {
+            FileInputStream fileIn = new FileInputStream(savedFile);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+
+            myAlgo.setLevel((Level) in.readObject());
+            System.out.println("loaded level");
+
+            in.close();
+            fileIn.close();
+
+        } catch (IOException i) {
+            i.printStackTrace();
+            return;
+
+        } catch (ClassNotFoundException c) {
+            System.out.println("Level class not found");
+            c.printStackTrace();
+            return;
+        }
+    }
 }

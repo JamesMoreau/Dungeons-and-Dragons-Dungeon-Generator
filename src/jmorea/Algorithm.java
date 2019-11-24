@@ -100,4 +100,7 @@ public final class Algorithm implements java.io.Serializable {
         return this.myLevel;
     }
 
+    public void setLevel(Level newLevel) {
+        this.myLevel = newLevel;
+    }
 }
