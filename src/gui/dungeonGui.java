@@ -168,11 +168,14 @@ public class dungeonGui<toReturn> extends Application {
             ButtonType rM = new ButtonType("Monster (-)");
             ButtonType aM = new ButtonType("Monster (+)");
 
+            ButtonType rT = new ButtonType("Treasure (-)");
+            ButtonType aT = new ButtonType("Treasure (+)");
+
             theController.reactToEditButton();
 
             if (myListView.getSelectionModel().getSelectedIndex() != -1) {
 
-                editAlert.getButtonTypes().addAll(rM, aM);
+                editAlert.getButtonTypes().addAll(rM, aM, rT, aT);
 
 
                 if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
@@ -202,6 +205,10 @@ public class dungeonGui<toReturn> extends Application {
                 this.reactToMonsterAddButton();
             } else if (option.get() == rM) {
                 this.reactToMonsterRemoveButton();
+            } else if (option.get() == aT) {
+                this.reactToTreasureAddButton();
+            } else if (option.get() == rT) {
+                this.reactToTreasureRemoveButton();
             } else {
                 System.out.println("Bad Input");
             }
@@ -335,6 +342,55 @@ public class dungeonGui<toReturn> extends Application {
 
             theController.addChamberMonster(this.myListView.getSelectionModel().getSelectedIndex());
             System.out.println("Added a monster");
+            this.updateBottomTextChamber();
+
+        } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+
+            if (false) {
+
+            } else {
+                System.out.println("Could not add monster");
+            }
+
+        } else {
+            System.out.println("Bad input");
+        }
+
+    }
+
+    private void reactToTreasureRemoveButton() {
+
+        if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+
+            if (theController.getChamberTreasureList(this.myListView.getSelectionModel().getSelectedIndex()).size() > 0) {
+
+                theController.getChamberTreasureList(this.myListView.getSelectionModel().getSelectedIndex()).remove(theController.getChamberTreasureList(this.myListView.getSelectionModel().getSelectedIndex()).size() - 1);
+                System.out.println("Removed a monster");
+                this.updateBottomTextChamber();
+
+            } else {
+                System.out.println("Could not remove chamber monster");
+            }
+
+
+        } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+
+            if (false) {
+
+            } else {
+                System.out.println("Could not remove passage monster");
+            }
+
+        } else {
+            System.out.println("Bad input");
+        }
+    }
+
+    private void reactToTreasureAddButton() {
+        if(myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+
+            theController.addChamberTreasure(this.myListView.getSelectionModel().getSelectedIndex());
+            System.out.println("Added treasure");
             this.updateBottomTextChamber();
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
