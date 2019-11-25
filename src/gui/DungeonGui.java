@@ -27,8 +27,6 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -80,16 +78,6 @@ public class DungeonGui<toReturn> extends Application {
     private final int listViewOffset = 5;
 
     /**
-     * path to the music.
-     */
-    private MediaPlayer mediaPlayer;
-
-    /**
-     * my media player.
-     */
-    private String musicPath;
-
-    /**
      * grid pane used for visual representation.
      */
     private ChamberView myRoom;
@@ -106,8 +94,6 @@ public class DungeonGui<toReturn> extends Application {
 
         this.fileChooser = setupFileChooser();
 
-        setupMusic();
-
         primaryStage = assignedStage;
         primaryStage.setTitle("Dungeon Generator");
 
@@ -118,18 +104,6 @@ public class DungeonGui<toReturn> extends Application {
 
         primaryStage.setScene(myScene);
         primaryStage.show();
-    }
-
-    private void setupMusic() {
-        this.musicPath = "res/C418.mp3";
-
-        Media media = new Media(new File(musicPath).toURI().toString());
-
-        this.mediaPlayer = new MediaPlayer(media);
-
-        this.mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-
-        mediaPlayer.play();
     }
 
     private FileChooser setupFileChooser() {
