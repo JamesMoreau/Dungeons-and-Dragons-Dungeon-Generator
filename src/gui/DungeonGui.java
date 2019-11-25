@@ -30,7 +30,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.File;
 import java.util.Optional;
@@ -80,9 +79,6 @@ public class DungeonGui<toReturn> extends Application {
      */
     private final int listViewOffset = 5;
 
-    /**
-     * path to the music.
-     */
     /*private MediaPlayer mediaPlayer;*/
 
     /**
@@ -490,8 +486,8 @@ public class DungeonGui<toReturn> extends Application {
             for (int i = 0; i < theController.getChambersList().get(myListView.getSelectionModel().getSelectedIndex()).getDoors().size(); i++) {
                 s = theController.getChamberDoorDescription(myListView.getSelectionModel().getSelectedIndex(), i);
 
-                if(s.contains("left")) {
-                    myRoom.addDoor(0,2);
+                if (s.contains("left")) {
+                    myRoom.addDoor(0, 2);
                 } else if (s.contains("ahead")) {
                     myRoom.addDoor(2, 0);
                 } else if (s.contains("right")) {
@@ -504,32 +500,31 @@ public class DungeonGui<toReturn> extends Application {
                 this.myRoom.addTreasure(2, 2);
             }
             if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 1) {
-                this.myRoom.addTreasure(3,3);
+                this.myRoom.addTreasure(3, 3);
             }
             if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 2) {
-                this.myRoom.addTreasure(3,1);
+                this.myRoom.addTreasure(3, 1);
             }
             if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 3) {
-                this.myRoom.addTreasure(1,1);
+                this.myRoom.addTreasure(1, 1);
             }
             if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 4) {
-                this.myRoom.addTreasure(1,3);
+                this.myRoom.addTreasure(1, 3);
             }
 
             /* Monster Placement Decision Tree */
-            if(theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 0) {
-                this.myRoom.addMonster(0,0);
+            if (theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 0) {
+                this.myRoom.addMonster(0, 0);
             }
-            if(theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 1) {
-                this.myRoom.addMonster(4,0);
+            if (theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 1) {
+                this.myRoom.addMonster(4, 0);
             }
-            if(theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 2) {
-                this.myRoom.addMonster(4,4);
+            if (theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 2) {
+                this.myRoom.addMonster(4, 4);
             }
-            if(theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 3) {
-                this.myRoom.addMonster(0,4);
+            if (theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 3) {
+                this.myRoom.addMonster(0, 4);
             }
-
 
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {

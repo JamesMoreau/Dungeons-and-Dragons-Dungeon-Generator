@@ -59,16 +59,26 @@ public class ChamberView extends GridPane {
     /**
      * adds a door to the specified coordinates.
      * @param x the horizontal coordinate
-     * @param y the horizontal coordinate
+     * @param y the vertical coordinate
      */
     public void addDoor(int x, int y) {
         this.add(floorFactory(door), x, y);
     }
 
+    /**
+     * Adds a treasure to the specified coordinates.
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     */
     public void addTreasure(int x, int y) {
         this.add(floorFactory(treasure), x, y);
     }
 
+    /**
+     * Adds a monster to the specified coordinates.
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     */
     public void addMonster(int x, int y) {
         this.add(floorFactory(monster), x, y);
     }
