@@ -117,22 +117,6 @@ public class DungeonGui<toReturn> extends Application {
         primaryStage.show();
     }
 
-    /*private void setupMusic() {
-        this.musicPath = "res/C418.mp3";
-
-        Media media = new Media(new File(musicPath).toURI().toString());
-
-        this.mediaPlayer = new MediaPlayer(media);
-
-        this.mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-
-        mediaPlayer.play();
-    }*/
-
-    private FileChooser setupFileChooser() {
-        FileChooser f = new FileChooser();
-        return f;
-    }
 
     /**
      * creates a button with basic style.
@@ -535,6 +519,36 @@ public class DungeonGui<toReturn> extends Application {
             this.myRoom.makeBasicFloor(6, 3);
             this.myRoom.addDoor(0, 1);
 
+            s = theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - listViewOffset);
+
+            /* Door Placement decision tree */
+            if (s.contains("passage ends in Door")) {
+                myRoom.addDoor(5, 1);
+            } else if (s.contains("(door) to left")) {
+                myRoom.addDoor(2, 0);
+            } else if (s.contains("(door) to right")) {
+                myRoom.addDoor(3, 2);
+            }
+
+            /* Treasure placement */
+            if (theController.getPassageTreasureList(myListView.getSelectionModel().getSelectedIndex() - listViewOffset).size() > 0) {
+                myRoom.addTreasure(2, 1);
+            }
+            if (theController.getPassageTreasureList(myListView.getSelectionModel().getSelectedIndex() - listViewOffset).size() > 1) {
+                myRoom.addTreasure(4, 1);
+            }
+            if (theController.getPassageTreasureList(myListView.getSelectionModel().getSelectedIndex() - listViewOffset).size() > 2) {
+                myRoom.addTreasure(0, 2);
+            }
+            if (theController.getPassageTreasureList(myListView.getSelectionModel().getSelectedIndex() - listViewOffset).size() > 3) {
+                myRoom.addTreasure(5, 0);
+            }
+
+            /* Monster Placement */
+            if (s.contains("Monster")) {
+                myRoom.addMonster(3, 1);
+            }
+
         } else {
             System.out.println("Bad input");
         }
@@ -630,6 +644,23 @@ public class DungeonGui<toReturn> extends Application {
         }
 
         this.updateSpaceView();
+    }
+
+    /*private void setupMusic() {
+        this.musicPath = "res/C418.mp3";
+
+        Media media = new Media(new File(musicPath).toURI().toString());
+
+        this.mediaPlayer = new MediaPlayer(media);
+
+        this.mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+
+        mediaPlayer.play();
+    }*/
+
+    private FileChooser setupFileChooser() {
+        FileChooser f = new FileChooser();
+        return f;
     }
 
     /**
