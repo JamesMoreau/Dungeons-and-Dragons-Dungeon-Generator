@@ -26,7 +26,6 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -40,7 +39,10 @@ import java.util.Optional;
 
 public class DungeonGui<toReturn> extends Application {
 
-    FileChooser fileChooser;
+    /**
+     * the file chooser pointer.
+     */
+    private FileChooser fileChooser;
 
     /**
      * the dungeon generator controller.
@@ -93,9 +95,9 @@ public class DungeonGui<toReturn> extends Application {
     private ChamberView myRoom;
 
 
-
     /**
      * starts the application.
+     *
      * @param assignedStage the JavaFX stage to be used.
      */
     @Override
@@ -137,7 +139,8 @@ public class DungeonGui<toReturn> extends Application {
 
     /**
      * creates a button with basic style.
-     * @param text the text inside the button
+     *
+     * @param text   the text inside the button
      * @param format the format of the button.
      * @return the button
      */
@@ -158,6 +161,7 @@ public class DungeonGui<toReturn> extends Application {
 
     /**
      * sets up the root for the generator's scene.
+     *
      * @return the Border Pane
      */
     private BorderPane setUpRoot() {
@@ -177,6 +181,7 @@ public class DungeonGui<toReturn> extends Application {
 
     /**
      * creates the list view for spaces.
+     *
      * @return the list view
      */
     private Node createSpaceListView() {
@@ -231,6 +236,7 @@ public class DungeonGui<toReturn> extends Application {
 
     /**
      * sets up the JavaFX vbox containing the listView.
+     *
      * @return the vbox
      */
     private Node setupLeftVBox() {
@@ -247,12 +253,12 @@ public class DungeonGui<toReturn> extends Application {
         b.setPrefWidth(150);
 
         b.setOnAction((ActionEvent event) -> {
-            this.fileChooser.setInitialDirectory(new File("Data/"));
+            this.fileChooser.setInitialDirectory(new File("Data"));
             this.fileChooser.setInitialFileName("myLevel.ser");
 
             File f = fileChooser.showOpenDialog(primaryStage);
 
-            if(f != null) {
+            if (f != null) {
                 System.out.println(f.getName());
                 theController.loadLevel(f);
             } else {
@@ -264,7 +270,7 @@ public class DungeonGui<toReturn> extends Application {
     }
 
     private Node createFileChooserSaveButton() {
-        Button b = createButton("Save","-fx-background-color: #FFFFFF; ");
+        Button b = createButton("Save", "-fx-background-color: #FFFFFF; ");
         b.setPrefWidth(150);
 
         b.setOnAction((ActionEvent event) -> {
@@ -274,7 +280,7 @@ public class DungeonGui<toReturn> extends Application {
 
             File f = fileChooser.showSaveDialog(primaryStage);
 
-            if(f != null) {
+            if (f != null) {
                 System.out.println(f.getName());
                 theController.saveLevel(f);
             } else {
@@ -287,6 +293,7 @@ public class DungeonGui<toReturn> extends Application {
 
     /**
      * creates the edit button for spaces.
+     *
      * @return the edit button
      */
     private Node createEditButton() {
@@ -352,6 +359,7 @@ public class DungeonGui<toReturn> extends Application {
 
     /**
      * sets up the JavaFX vbox containing the door list comboBox.
+     *
      * @return the vbox
      */
     private Node setupRightVBox() {
@@ -368,6 +376,7 @@ public class DungeonGui<toReturn> extends Application {
 
     /**
      * sets up the bottom space description box.
+     *
      * @return the text area
      */
     private Node setupBottomTextBox() {
@@ -449,6 +458,7 @@ public class DungeonGui<toReturn> extends Application {
 
     /**
      * sets up the dungeon/passage visual.
+     *
      * @return the grid-pane visual
      */
     private Node setupSpaceView() {
@@ -465,22 +475,69 @@ public class DungeonGui<toReturn> extends Application {
     private void updateSpaceView() {
 
         System.out.println("updating space view");
+        String s;
 
         if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
             System.out.println("showing a new chamber!");
 
             this.myRoom.getChildren().clear();
 
-            this.myRoom.makeBasicFloor(5,5);
-            this.myRoom.addDoor(2,4);
+            this.myRoom.makeBasicFloor(5, 5);
+            this.myRoom.addDoor(2, 4);
+
+            /* Door placement decision tree */
+            for (int i = 0; i < theController.getChambersList().get(myListView.getSelectionModel().getSelectedIndex()).getDoors().size(); i++) {
+                s = theController.getChamberDoorDescription(myListView.getSelectionModel().getSelectedIndex(), i);
+
+                if(s.contains("left")) {
+                    myRoom.addDoor(0,2);
+                } else if (s.contains("ahead")) {
+                    myRoom.addDoor(2, 0);
+                } else if (s.contains("right")) {
+                    myRoom.addDoor(4, 2);
+                }
+            }
+
+            /* Treasure Placement Decision Tree */
+            if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 0) {
+                this.myRoom.addTreasure(2, 2);
+            }
+            if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 1) {
+                this.myRoom.addTreasure(3,3);
+            }
+            if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 2) {
+                this.myRoom.addTreasure(3,1);
+            }
+            if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 3) {
+                this.myRoom.addTreasure(1,1);
+            }
+            if (theController.getChamberTreasureList(myListView.getSelectionModel().getSelectedIndex()).size() > 4) {
+                this.myRoom.addTreasure(1,3);
+            }
+
+            /* Monster Placement Decision Tree */
+            if(theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 0) {
+                this.myRoom.addMonster(0,0);
+            }
+            if(theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 1) {
+                this.myRoom.addMonster(4,0);
+            }
+            if(theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 2) {
+                this.myRoom.addMonster(4,4);
+            }
+            if(theController.getChamberMonsters((myListView.getSelectionModel().getSelectedIndex())).size() > 3) {
+                this.myRoom.addMonster(0,4);
+            }
+
+
 
         } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
             System.out.println("showing a new passage!");
 
             this.myRoom.getChildren().clear();
 
-            this.myRoom.makeBasicFloor(6,3);
-            this.myRoom.addDoor(0,1);
+            this.myRoom.makeBasicFloor(6, 3);
+            this.myRoom.addDoor(0, 1);
 
         } else {
             System.out.println("Bad input");
@@ -516,6 +573,8 @@ public class DungeonGui<toReturn> extends Application {
         } else {
             System.out.println("Bad input");
         }
+
+        this.updateSpaceView();
     }
 
     /**
@@ -537,6 +596,7 @@ public class DungeonGui<toReturn> extends Application {
             System.out.println("Bad input");
         }
 
+        this.updateSpaceView();
     }
 
     /**
@@ -572,6 +632,8 @@ public class DungeonGui<toReturn> extends Application {
         } else {
             System.out.println("Bad input");
         }
+
+        this.updateSpaceView();
     }
 
     /**
@@ -594,10 +656,12 @@ public class DungeonGui<toReturn> extends Application {
             System.out.println("Bad input");
         }
 
+        this.updateSpaceView();
     }
 
     /**
      * launches gui.
+     *
      * @param args n/a
      */
     public static void main(String[] args) {

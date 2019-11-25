@@ -9,7 +9,6 @@ import jmorea.Chamber;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -167,6 +166,10 @@ public class Controller {
         myAlgo.getLevel().getPassages().get(i).addTreasure(new Treasure());
     }
 
+    /**
+     * Serializes the current level into the specified file.
+     * @param savedFile the pointer to a file.
+     */
     public void saveLevel(File savedFile) {
         try {
             FileOutputStream fileOut = new FileOutputStream(savedFile);
@@ -183,6 +186,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Loads the level from a serialized object file.
+     * @param savedFile a pointer to the save file.
+     */
     public void loadLevel(File savedFile) {
         try {
             FileInputStream fileIn = new FileInputStream(savedFile);

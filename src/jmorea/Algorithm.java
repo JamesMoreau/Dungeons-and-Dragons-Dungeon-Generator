@@ -1,6 +1,6 @@
 package jmorea;
 
-//TODO: getDoors from a chamber and check if that ArrayList.contains(the door) for any door you are trying to get a target for.
+//TO DO: getDoors from a chamber and check if that ArrayList.contains(the door) for any door you are trying to get a target for.
 
 /**
  * Dungeon generator class manages algorithm.
@@ -100,6 +100,10 @@ public final class Algorithm implements java.io.Serializable {
         return this.myLevel;
     }
 
+    /**
+     * loads the level.
+     * @param newLevel the given level.
+     */
     public void setLevel(Level newLevel) {
         this.myLevel = newLevel;
     }

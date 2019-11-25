@@ -5,3 +5,4 @@ doc/*
 javafxlib/*
 dist/*
 build/*
+*.ser
