@@ -114,7 +114,7 @@ public class DungeonGui<toReturn> extends Application {
 
         this.root = setUpRoot();
 
-        Scene myScene = new Scene(root, 750, 500);
+        Scene myScene = new Scene(root, 750, 600);
         setApplicationIcon();
 
         primaryStage.setScene(myScene);
