@@ -522,7 +522,7 @@ public class DungeonGui<toReturn> extends Application {
             s = theController.getNewPassageDescription(myListView.getSelectionModel().getSelectedIndex() - listViewOffset);
 
             /* Door Placement decision tree */
-            if (s.contains("passage ends in Door")) {
+            if (s.contains("passage ends in")) {
                 myRoom.addDoor(5, 1);
             } else if (s.contains("(door) to left")) {
                 myRoom.addDoor(2, 0);
