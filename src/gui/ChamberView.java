@@ -10,61 +10,27 @@ public class ChamberView extends GridPane {
     private String floor;
     private String treasure;
     private String door;
-    private int length;
-    private int width;
 
 
     public ChamberView(int len, int wid){
         floor = "/res/floor.png";
-        treasure = "/res/treasure.png";
+        treasure = "/res/pixel_chest.png";
         door = "/res/door.png";
-        length = len;
-        width = wid; //user these values to decide the size of the view and how many tiles
 
-
-        Node[] tiles = makeTiles();
-        //should definitely be a loop and possibly a method
-        add(tiles[0], 0, 0, 1, 1);
-        add(tiles[1], 0, 1, 1, 1);
-        add(tiles[2], 0, 2, 1, 1);
-        add(tiles[3], 0, 3, 1, 1);
-        add(tiles[4], 1, 0, 1, 1);
-        add(tiles[5], 1, 1, 1, 1);
-        add(tiles[6], 1, 2, 1, 1);
-        add(tiles[7], 1, 3, 1, 1);
-        add(tiles[8], 2, 0, 1, 1);
-        add(tiles[9], 2, 1, 1, 1);
-        add(tiles[10], 2, 2, 1, 1);
-        add(tiles[11], 2, 3, 1, 1);
-        add(tiles[12], 3, 0, 1, 1);
-        add(tiles[13], 3, 1, 1, 1);
-        add(tiles[14], 3, 2, 1, 1);
-        add(tiles[15], 3, 3, 1, 1);
-
+        makeBasicFloor(len, wid);
     }
 
+    public void makeBasicFloor(int x, int y) {
 
-    private Node[] makeTiles() {  //should have a parameter and a loop
+        for(int i = 0; i < x; i++) {
+            for(int j = 0; j < y; j++) {
+                this.add(floorFactory(floor), i, j);
+            }
+        }
+    }
 
-        Node[] toReturn = {
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(treasure),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(door),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(floor),
-                floorFactory(floor)
-        };
-        return toReturn;
+    public void addDoor(int x, int y) {
+        this.add(floorFactory(door) ,x, y);
     }
 
 

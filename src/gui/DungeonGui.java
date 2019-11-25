@@ -28,9 +28,12 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.util.Optional;
@@ -74,6 +77,22 @@ public class DungeonGui<toReturn> extends Application {
      */
     private final int listViewOffset = 5;
 
+    /**
+     * path to the music.
+     */
+    private MediaPlayer mediaPlayer;
+
+    /**
+     * my media player.
+     */
+    private String musicPath;
+
+    /**
+     * grid pane used for visual representation.
+     */
+    private ChamberView myRoom;
+
+
 
     /**
      * starts the application.
@@ -85,21 +104,34 @@ public class DungeonGui<toReturn> extends Application {
 
         this.fileChooser = setupFileChooser();
 
+        setupMusic();
+
         primaryStage = assignedStage;
         primaryStage.setTitle("Dungeon Generator");
 
         this.root = setUpRoot();
 
-        Scene myScene = new Scene(root, 650, 500);
+        Scene myScene = new Scene(root, 750, 500);
         setApplicationIcon();
 
         primaryStage.setScene(myScene);
         primaryStage.show();
     }
 
+    private void setupMusic() {
+        this.musicPath = "res/C418.mp3";
+
+        Media media = new Media(new File(musicPath).toURI().toString());
+
+        this.mediaPlayer = new MediaPlayer(media);
+
+        this.mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+
+        mediaPlayer.play();
+    }
+
     private FileChooser setupFileChooser() {
         FileChooser f = new FileChooser();
-
         return f;
     }
 
@@ -173,7 +205,9 @@ public class DungeonGui<toReturn> extends Application {
             } else {
                 System.out.println("Bad selection.");
             }
+
             updateDoorList();
+            updateSpaceView();
         });
 
         return myListView;
@@ -250,8 +284,6 @@ public class DungeonGui<toReturn> extends Application {
 
         return b;
     }
-
-
 
     /**
      * creates the edit button for spaces.
@@ -420,12 +452,39 @@ public class DungeonGui<toReturn> extends Application {
      * @return the grid-pane visual
      */
     private Node setupSpaceView() {
-        GridPane myRoom = new ChamberView(5, 4);
+        this.myRoom = new ChamberView(5, 5);
+
         myRoom.setPadding(new Insets(20, 10, 10, 10));
         myRoom.setAlignment(Pos.TOP_CENTER);
         myRoom.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
         return myRoom;
+    }
+
+    private void updateSpaceView() {
+
+        System.out.println("updating space view");
+
+        if (myListView.getSelectionModel().getSelectedItem().toString().contains("Chamber")) {
+            System.out.println("showing a new chamber!");
+
+            this.myRoom.getChildren().clear();
+
+            this.myRoom.makeBasicFloor(5,5);
+            this.myRoom.addDoor(2,4);
+
+        } else if (myListView.getSelectionModel().getSelectedItem().toString().contains("Passage")) {
+            System.out.println("showing a new passage!");
+
+            this.myRoom.getChildren().clear();
+
+            this.myRoom.makeBasicFloor(6,3);
+            this.myRoom.addDoor(0,1);
+
+        } else {
+            System.out.println("Bad input");
+        }
     }
 
     /**
