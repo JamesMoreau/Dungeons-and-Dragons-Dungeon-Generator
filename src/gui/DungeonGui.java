@@ -34,8 +34,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.Optional;
 
-/*import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;*/
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class DungeonGui<toReturn> extends Application {
 
@@ -79,7 +80,7 @@ public class DungeonGui<toReturn> extends Application {
      */
     private final int listViewOffset = 5;
 
-    /*private MediaPlayer mediaPlayer;*/
+    private MediaPlayer mediaPlayer;
 
     /**
      * my media player.
@@ -103,7 +104,7 @@ public class DungeonGui<toReturn> extends Application {
 
         this.fileChooser = setupFileChooser();
 
-        /*setupMusic();*/
+        setupMusic();
 
         primaryStage = assignedStage;
         primaryStage.setTitle("Dungeon Generator");
@@ -111,6 +112,7 @@ public class DungeonGui<toReturn> extends Application {
         this.root = setUpRoot();
 
         Scene myScene = new Scene(root, 750, 600);
+
         setApplicationIcon();
 
         primaryStage.setScene(myScene);
@@ -646,7 +648,7 @@ public class DungeonGui<toReturn> extends Application {
         this.updateSpaceView();
     }
 
-    /*private void setupMusic() {
+    private void setupMusic() {
         this.musicPath = "res/C418.mp3";
 
         Media media = new Media(new File(musicPath).toURI().toString());
@@ -656,7 +658,7 @@ public class DungeonGui<toReturn> extends Application {
         this.mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
 
         mediaPlayer.play();
-    }*/
+    }
 
     private FileChooser setupFileChooser() {
         FileChooser f = new FileChooser();
