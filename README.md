@@ -1,21 +1,11 @@
-This is the fourth project for 2430.
-
-I have done the work for this assignment on my own and have not copied work from any other sources. 
+This is a Dungeon Creator tool for DnD.
 
 INFO:
--
-James Moreau<br/>
-1065510<br/>
-jmorea03@uoguelph.ca<br/>
+
+Requires JavaFX libraries
 
 RUN PROGRAM WITH:
  "ant runmeJava"
- 
- OPTIONAL FEATURES
- -
- - Chamber and Passage Visual View
- - Chill Music Player (um bonus?) (nevermind, looks like the server doesn't have the required libraries so I commented the code out)
-
 
 SOURCES:<br/>
 -
